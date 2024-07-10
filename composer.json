@@ -1,0 +1,44 @@
+{
+  "name": "viniciusjose/product-api",
+  "description": "API para cadastro de produtos",
+  "type": "project",
+  "keywords": [
+    "php",
+    "product",
+    "api",
+    "microservice"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vinicius José",
+      "email": "vinicius.jsilv@gmail.com"
+    }
+  ],
+  "suggest": {
+    "ext-json": "Required to use JSON.",
+    "ext-pdo": "Required to use MySQL Client."
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "require": {
+    "php": "^8.3",
+    "slim/slim": "4.*",
+    "slim/psr7": "^1.7",
+    "vlucas/phpdotenv": "v5.6",
+    "ext-json": "*",
+    "ext-pdo": "*"
+  }
+}
