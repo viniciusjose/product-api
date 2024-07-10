@@ -2,6 +2,6 @@
 
 namespace App\Domain\Contract\Repositories\ProductType;
 
-interface IProductTypeRepository extends IStoreProductType, IGetByNameProductType
+interface IProductTypeRepository extends IStoreProductType, IListProductType, IGetByNameProductType
 {
 }

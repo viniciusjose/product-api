@@ -4,6 +4,7 @@ namespace App\Infra\Repositories\PDO;
 
 use App\Domain\Contract\Repositories\ProductType\IProductTypeRepository;
 use App\Domain\Entities\ProductType;
+use App\Domain\Queries\ProductType\ListProductTypeQuery;
 use Carbon\Carbon;
 use PDO;
 
@@ -12,6 +13,22 @@ class ProductTypeRepository implements IProductTypeRepository
     public function __construct(
         protected PDO $db
     ) {
+    }
+
+    public function list(ListProductTypeQuery $query): array
+    {
+        $stmt = $this->db->prepare('SELECT * FROM product_types ORDER BY :orderBy');
+        $orderBy = implode(', ', $query->orderBy) ?? 'name';
+        $stmt->bindParam(':orderBy', $orderBy);
+        $stmt->execute();
+
+        $data = $stmt->fetchAll();
+
+        if (!$data) {
+            return [];
+        }
+
+        return $data;
     }
 
     public function store(ProductType $productType): int

@@ -50,6 +50,14 @@ abstract class Controller
     }
 
     /**
+     * @return array|object|null
+     */
+    protected function getQueryData(): array|object|null
+    {
+        return $this->request->getQueryParams();
+    }
+
+    /**
      * @param string $name
      * @return mixed
      */

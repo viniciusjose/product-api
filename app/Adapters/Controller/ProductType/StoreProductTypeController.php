@@ -5,6 +5,7 @@ namespace App\Adapters\Controller\ProductType;
 use App\Adapters\Controller\Controller;
 use App\Application\DTO\ProductType\StoreProductTypeInputDto;
 use App\Application\UseCase\ProductType\StoreProductTypeUseCase;
+use App\Domain\Exception\ProductType\ProductTypeDuplicatedException;
 use JsonException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -22,6 +23,7 @@ class StoreProductTypeController extends Controller
 
     /**
      * @throws JsonException
+     * @throws ProductTypeDuplicatedException
      */
     protected function perform(): Response
     {
