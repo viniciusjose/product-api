@@ -39,6 +39,26 @@ class ProductTypeRepository implements IProductTypeRepository
         return (int)$this->db->lastInsertId();
     }
 
+    public function show(int $id): ?ProductType
+    {
+        $stmt = $this->db->prepare('SELECT * FROM product_types WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        $data = $stmt->fetch();
+
+        if (!$data) {
+            return null;
+        }
+
+        return new ProductType(
+            name: $data['name'],
+            id: $data['id'],
+            description: $data['description'],
+            createdAt: Carbon::parse($data['created_at']),
+            updatedAt: Carbon::parse($data['updated_at'])
+        );
+    }
 
     public function getByName(string $name): ?ProductType
     {
@@ -58,5 +78,26 @@ class ProductTypeRepository implements IProductTypeRepository
             createdAt: Carbon::parse($data['created_at']),
             updatedAt: Carbon::parse($data['updated_at'])
         );
+    }
+
+    public function update(ProductType $productType): bool
+    {
+        $id = $productType->getId();
+        $name = $productType->getName();
+        $description = $productType->getDescription();
+        $updatedAt = $productType->getUpdatedAt();
+
+        $stmt = $this->db->prepare(
+            'UPDATE product_types SET name = :name, description = :description, updated_at = :updatedAt WHERE id = :id'
+        );
+
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':updatedAt', $updatedAt);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+
+        return $stmt->rowCount() > 0;
     }
 }

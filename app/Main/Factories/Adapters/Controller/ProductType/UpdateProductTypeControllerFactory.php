@@ -2,13 +2,13 @@
 
 namespace App\Main\Factories\Adapters\Controller\ProductType;
 
-use App\Adapters\Controller\ProductType\StoreProductTypeController;
+use App\Adapters\Controller\ProductType\UpdateProductTypeController;
 use App\Adapters\Decorators\Controller\DbTransactionControllerDecorator;
-use App\Main\Factories\Application\UseCase\ProductType\StoreProductTypeUseCaseFactory;
+use App\Main\Factories\Application\UseCase\ProductType\UpdateProductTypeUseCaseFactory;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class StoreProductTypeControllerFactory
+class UpdateProductTypeControllerFactory
 {
     public function __invoke(Request $request, Response $response, array $args): Response
     {
@@ -16,11 +16,11 @@ class StoreProductTypeControllerFactory
             $request,
             $response,
             $args,
-            new StoreProductTypeController(
+            new UpdateProductTypeController(
                 $request,
                 $response,
                 $args,
-                StoreProductTypeUseCaseFactory::make()
+                UpdateProductTypeUseCaseFactory::make()
             )
         );
 

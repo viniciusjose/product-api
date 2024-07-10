@@ -4,7 +4,7 @@ namespace App\Domain\Contract\Repositories\ProductType;
 
 use App\Domain\Entities\ProductType;
 
-interface IStoreProductType
+interface IUpdateProductType
 {
-    public function store(ProductType $productType): int;
+    public function update(ProductType $productType): bool;
 }

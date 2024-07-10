@@ -22,7 +22,6 @@ class StoreProductTypeController extends Controller
     }
 
     /**
-     * @throws JsonException
      * @throws ProductTypeDuplicatedException
      */
     protected function perform(): Response
