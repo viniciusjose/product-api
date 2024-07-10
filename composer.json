@@ -35,12 +35,13 @@
   },
   "require": {
     "php": "^8.3",
-    "slim/slim": "4.*",
-    "slim/psr7": "^1.7",
-    "vlucas/phpdotenv": "v5.6",
-    "doctrine/migrations": "^3.8",
     "ext-json": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "doctrine/migrations": "^3.8",
+    "nesbot/carbon": "^3.6",
+    "slim/psr7": "^1.7",
+    "slim/slim": "4.*",
+    "vlucas/phpdotenv": "v5.6"
   }
   ,
   "require-dev": {

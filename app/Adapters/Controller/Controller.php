@@ -3,6 +3,9 @@
 namespace App\Adapters\Controller;
 
 
+use App\Domain\Exception\DomainException;
+use App\Domain\Exception\DomainRecordDuplicatedException;
+use App\Domain\Exception\DomainRecordNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use JsonException;
@@ -24,7 +27,13 @@ abstract class Controller
 
     public function __invoke(): Response
     {
-        return $this->perform();
+        try {
+            return $this->perform();
+        } catch (DomainRecordNotFoundException $e) {
+            throw new HttpNotFoundException($this->request, $e->getMessage());
+        } catch (DomainException $e) {
+            throw new HttpBadRequestException($this->request, $e->getMessage());
+        }
     }
 
     /**
@@ -77,5 +86,10 @@ abstract class Controller
         return $this->response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($payload->getStatusCode());
+    }
+
+    protected function respondCreated(): Response
+    {
+        return $this->response->withStatus(201);
     }
 }

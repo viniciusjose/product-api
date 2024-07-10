@@ -6,6 +6,12 @@ ARG GROUP_ID
 
 WORKDIR /var/www
 
+ARG timezone
+ENV TIMEZONE="America/Sao_Paulo"
+
+RUN ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+        && echo "${TIMEZONE}" > /etc/timezone
+
 RUN apt-get update && apt-get install -y \
     git \
     zip \
@@ -15,7 +21,8 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     iputils-ping \
     telnet \
-    libpq-dev
+    libpq-dev \
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
