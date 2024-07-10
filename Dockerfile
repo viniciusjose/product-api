@@ -13,6 +13,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     vim \
     libicu-dev \
+    iputils-ping \
+    telnet \
     libpq-dev
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

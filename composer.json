@@ -38,7 +38,18 @@
     "slim/slim": "4.*",
     "slim/psr7": "^1.7",
     "vlucas/phpdotenv": "v5.6",
+    "doctrine/migrations": "^3.8",
     "ext-json": "*",
     "ext-pdo": "*"
+  }
+  ,
+  "require-dev": {
+    "roave/security-advisories": "dev-latest"
+  },
+  "scripts": {
+    "test": "phpunit",
+    "migrate": "vendor/bin/doctrine-migrations migrate",
+    "migration:generate": "vendor/bin/doctrine-migrations generate",
+    "migration:rollback": "vendor/bin/doctrine-migrations migrate first"
   }
 }
