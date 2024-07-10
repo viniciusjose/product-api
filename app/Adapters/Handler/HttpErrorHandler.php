@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Handler;
+namespace App\Adapters\Handler;
 
 use Slim\Handlers\ErrorHandler;
-use App\Application\Controller\ControllerError;
-use App\Application\Controller\ControllerPayload;
+use App\Adapters\Controller\ControllerError;
+use App\Adapters\Controller\ControllerPayload;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpException;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use App\Application\Handler\HttpErrorHandler;
+use App\Adapters\Handler\HttpErrorHandler;
 use Slim\Factory\AppFactory;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
