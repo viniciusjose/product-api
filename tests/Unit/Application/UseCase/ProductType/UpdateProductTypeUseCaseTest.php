@@ -1,43 +1,22 @@
 <?php
 
-namespace Tests\Unit\Application\UseCase\ProductType;
-
 use App\Application\DTO\ProductType\UpdateProductTypeInputDto;
 use App\Application\DTO\ProductType\UpdateProductTypeOutputDto;
 use App\Application\UseCase\ProductType\UpdateProductTypeUseCase;
 use App\Domain\Contract\Repositories\ProductType\IProductTypeRepository;
-use App\Domain\Entities\Product;
 use App\Domain\Entities\ProductType;
 use App\Domain\Exception\ProductType\ProductTypeDuplicatedException;
 use App\Domain\Exception\ProductType\ProductTypeNotFoundException;
 use App\Domain\Exception\ProductType\ProductTypeUpdateException;
 use Carbon\Carbon;
-use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\UsesClass;
-use PHPUnit\Framework\MockObject\Exception;
-use Tests\TestCase;
 
-#[CoversClass(UpdateProductTypeUseCase::class)]
-#[UsesClass(Product::class), UsesClass(UpdateProductTypeInputDto::class), UsesClass(UpdateProductTypeOutputDto::class)]
-class UpdateProductTypeUseCaseTest extends TestCase
-{
-    protected UpdateProductTypeUseCase $sut;
+describe('UpdateProductTypeUseCase', function () {
+    beforeEach(function () {
+        $repoMock = Mockery::mock(IProductTypeRepository::class);
 
-    protected IProductTypeRepository $productTypeRepoMock;
-
-    /**
-     * @throws Exception
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->productTypeRepoMock = $this->createMock(IProductTypeRepository::class);
-
-        $this->productTypeRepoMock
-            ->method('show')
-            ->willReturn(
+        $repoMock
+            ->shouldReceive('show')
+            ->andReturn(
                 new ProductType(
                     name: 'Product Type Name',
                     id: 1,
@@ -47,58 +26,39 @@ class UpdateProductTypeUseCaseTest extends TestCase
                 )
             );
 
-        $this->productTypeRepoMock
-            ->method('getByName')
-            ->willReturn(null);
+        $repoMock
+            ->shouldReceive('getByName')
+            ->andReturn(null);
 
-        $this->productTypeRepoMock
-            ->method('update')
-            ->willReturn(true);
+        $repoMock
+            ->shouldReceive('update')
+            ->andReturn(true);
 
-        $this->sut = $this->makeSut();
-    }
+        $this->sut = new UpdateProductTypeUseCase($repoMock);
+    });
 
-    private function makeSut(): UpdateProductTypeUseCase
-    {
-        return new UpdateProductTypeUseCase($this->productTypeRepoMock);
-    }
-
-    #[Test]
-    public function testItShouldBeInstanceOfUpdateProductTypeUseCase(): void
-    {
+    test('it should be instance of update product type use case', function () {
         self::assertInstanceOf(UpdateProductTypeUseCase::class, $this->sut);
-    }
+    });
 
-    /**
-     * @throws ProductTypeUpdateException
-     * @throws ProductTypeNotFoundException
-     * @throws ProductTypeDuplicatedException
-     */
-    #[Test]
-    public function testItShouldBeUpdateProductType(): void
-    {
+    test('it should be update product type', function () {
         $dto = $this->sut->handle(
             new UpdateProductTypeInputDto(id: 1, name: 'Product Type Name', description: 'Product Type Description')
         );
 
-        self::assertEquals(1, $dto->id);
-        self::assertEquals('Product Type Name', $dto->name);
-        self::assertEquals('Product Type Description', $dto->description);
-    }
+        expect($dto)->toBeInstanceOf(UpdateProductTypeOutputDto::class)
+            ->and($dto)->toHaveProperty('id')
+            ->and($dto->id)->toBe(1)
+            ->and($dto->name)->toBe('Product Type Name')
+            ->and($dto->description)->toBe('Product Type Description');
+    });
 
-    /**
-     * @throws ProductTypeNotFoundException
-     * @throws ProductTypeUpdateException
-     * @throws Exception
-     */
-    #[Test]
-    public function testItShouldBeThrowIfProductTypeNameExists(): void
-    {
-        $this->productTypeRepoMock = $this->createMock(IProductTypeRepository::class);
+    test('it should be throw if product type name exists', function () {
+        $repoMock = Mockery::mock(IProductTypeRepository::class);
 
-        $this->productTypeRepoMock
-            ->method('show')
-            ->willReturn(
+        $repoMock
+            ->shouldReceive('show')
+            ->andReturn(
                 new ProductType(
                     name: 'Product Type Name',
                     id: 1,
@@ -108,56 +68,36 @@ class UpdateProductTypeUseCaseTest extends TestCase
                 )
             );
 
-        $this->productTypeRepoMock->method('getByName')
-            ->willReturn(new ProductType(name: 'Product Type New Name', description: 'Product Type Description'));
+        $repoMock->shouldReceive('getByName')
+            ->andReturn(new ProductType(name: 'Product Type New Name', description: 'Product Type Description'));
 
-        $this->expectException(ProductTypeDuplicatedException::class);
-
-        $sut = $this->makeSut();
+        $sut = new UpdateProductTypeUseCase($repoMock);
 
         $sut->handle(
             new UpdateProductTypeInputDto(id: 1, name: 'Product Type New Name', description: 'Product Type Description')
         );
-    }
+    })->throws(ProductTypeDuplicatedException::class);
 
+    test('it should be throw if product type dont exists', function () {
+        $repoMock = Mockery::mock(IProductTypeRepository::class);
 
-    /**
-     * @throws ProductTypeUpdateException
-     * @throws Exception
-     * @throws ProductTypeDuplicatedException
-     */
-    #[Test]
-    public function testItShouldBeThrowIfProductTypeDontExists(): void
-    {
-        $this->productTypeRepoMock = $this->createMock(IProductTypeRepository::class);
+        $repoMock
+            ->shouldReceive('show')
+            ->andReturn(null);
 
-        $this->productTypeRepoMock
-            ->method('show')
-            ->willReturn(null);
-
-
-        $this->expectException(ProductTypeNotFoundException::class);
-
-        $sut = $this->makeSut();
+        $sut = new UpdateProductTypeUseCase($repoMock);
 
         $sut->handle(
             new UpdateProductTypeInputDto(id: 1, name: 'Product Type New Name', description: 'Product Type Description')
         );
-    }
+    })->throws(ProductTypeNotFoundException::class);
 
-    /**
-     * @throws Exception
-     * @throws ProductTypeDuplicatedException
-     * @throws ProductTypeNotFoundException
-     */
-    #[Test]
-    public function testItShouldBeThrowIfProductTypeCouldNotUpdated(): void
-    {
-        $this->productTypeRepoMock = $this->createMock(IProductTypeRepository::class);
+    test('it should be throw if product type could not updated', function () {
+        $repoMock = Mockery::mock(IProductTypeRepository::class);
 
-        $this->productTypeRepoMock
-            ->method('show')
-            ->willReturn(
+        $repoMock
+            ->shouldReceive('show')
+            ->andReturn(
                 new ProductType(
                     name: 'Product Type Name',
                     id: 1,
@@ -167,18 +107,17 @@ class UpdateProductTypeUseCaseTest extends TestCase
                 )
             );
 
-        $this->productTypeRepoMock->method('getByName')
-            ->willReturn(null);
+        $repoMock->shouldReceive('getByName')
+            ->andReturn(null);
 
-        $this->productTypeRepoMock->method('update')
-            ->willReturn(false);
+        $repoMock->shouldReceive('update')
+            ->andReturn(false);
 
-        $this->expectException(ProductTypeUpdateException::class);
-
-        $sut = $this->makeSut();
+        $sut = new UpdateProductTypeUseCase($repoMock);
 
         $sut->handle(
             new UpdateProductTypeInputDto(id: 1, name: 'Product Type New Name', description: 'Product Type Description')
         );
-    }
-}
+    })->throws(ProductTypeUpdateException::class);
+});
+
