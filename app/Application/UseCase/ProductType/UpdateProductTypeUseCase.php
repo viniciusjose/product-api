@@ -8,6 +8,7 @@ use App\Application\DTO\ProductType\UpdateProductTypeOutputDto;
 use App\Domain\Contract\Repositories\ProductType\IGetByNameProductType;
 use App\Domain\Contract\Repositories\ProductType\IShowProductType;
 use App\Domain\Contract\Repositories\ProductType\IStoreProductType;
+use App\Domain\Contract\Repositories\ProductType\IUpdateProductType;
 use App\Domain\Entities\ProductType;
 use App\Domain\Exception\ProductType\ProductTypeDuplicatedException;
 use App\Domain\Exception\ProductType\ProductTypeNotFoundException;
@@ -17,7 +18,7 @@ use Carbon\Carbon;
 readonly class UpdateProductTypeUseCase
 {
     public function __construct(
-        protected IStoreProductType|IGetByNameProductType|IShowProductType $productTypeRepository
+        protected IUpdateProductType|IGetByNameProductType|IShowProductType $productTypeRepository
     ) {
     }
 

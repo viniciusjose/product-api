@@ -7,7 +7,6 @@ use App\Domain\Contract\Repositories\ProductType\IGetByNameProductType;
 use App\Domain\Contract\Repositories\ProductType\IStoreProductType;
 use App\Domain\Entities\ProductType;
 use App\Domain\Exception\ProductType\ProductTypeDuplicatedException;
-use Carbon\Carbon;
 
 readonly class StoreProductTypeUseCase
 {
