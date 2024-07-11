@@ -7,6 +7,7 @@ interface IProductTypeRepository extends
     IShowProductType,
     IStoreProductType,
     IUpdateProductType,
+    IDestroyProductType,
     IGetByNameProductType
 {
 }

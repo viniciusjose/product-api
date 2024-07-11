@@ -2,14 +2,14 @@
 
 namespace App\Main\Factories\Application\UseCase\ProductType;
 
-use App\Application\UseCase\ProductType\UpdateProductTypeUseCase;
+use App\Application\UseCase\ProductType\DestroyProductTypeUseCase;
 use App\Main\Factories\Infra\Repositories\PDO\ProductTypeRepositoryFactory;
 
-class UpdateProductTypeUseCaseFactory
+class DestroyProductTypeUseCaseFactory
 {
-    public static function make(): UpdateProductTypeUseCase
+    public static function make(): DestroyProductTypeUseCase
     {
-        return new UpdateProductTypeUseCase(
+        return new DestroyProductTypeUseCase(
             productTypeRepository: ProductTypeRepositoryFactory::make()
         );
     }

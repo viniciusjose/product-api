@@ -100,4 +100,13 @@ class ProductTypeRepository implements IProductTypeRepository
 
         return $stmt->rowCount() > 0;
     }
+
+    public function destroy(int $id): int
+    {
+        $stmt = $this->db->prepare('DELETE FROM product_types WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
 }

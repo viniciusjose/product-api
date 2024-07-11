@@ -100,4 +100,9 @@ abstract class Controller
     {
         return $this->response->withStatus(201);
     }
+
+    protected function respondNoContent(): Response
+    {
+        return $this->response->withStatus(204);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\ProductType;
 
-class UpdateProductTypeInputDto
+readonly class UpdateProductTypeInputDto
 {
     public function __construct(
         public string $id,

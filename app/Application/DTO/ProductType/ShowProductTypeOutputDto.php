@@ -2,10 +2,9 @@
 
 namespace App\Application\DTO\ProductType;
 
-use App\Application\DTO\Arrayable;
 use Carbon\Carbon;
 
-readonly class UpdateProductTypeOutputDto implements Arrayable
+readonly class ShowProductTypeOutputDto
 {
     public function __construct(
         public int $id,
