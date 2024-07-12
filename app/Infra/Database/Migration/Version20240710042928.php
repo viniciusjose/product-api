@@ -23,12 +23,10 @@ final class Version20240710042928 extends AbstractMigration
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string');
         $table->addColumn('price', 'decimal', ['precision' => 10, 'scale' => 2]);
-        $table->addColumn('product_type_id', 'integer');
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
-        $table->addForeignKeyConstraint('product_types', ['product_type_id'], ['id'], ['onDelete' => 'CASCADE']);
         $table->addUniqueIndex(['name'], 'products_name_unique');
     }
 

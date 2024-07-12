@@ -19,7 +19,7 @@ final class Version20240710042123 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('product_types');
+        $table = $schema->createTable('types');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('description', 'string', ['length' => 255, 'notnull' => false]);

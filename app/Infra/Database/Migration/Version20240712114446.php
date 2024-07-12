@@ -10,28 +10,28 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240710042725 extends AbstractMigration
+final class Version20240712114446 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Generated product_type_taxes table';
+        return 'Create product_types table';
     }
 
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('type_taxes');
+        $table = $schema->createTable('product_types');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('type_id', 'integer');
-        $table->addColumn('tax_id', 'integer');
+        $table->addColumn('product_id', 'integer');
 
         $table->setPrimaryKey(['id']);
         $table->addForeignKeyConstraint('types', ['type_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $table->addForeignKeyConstraint('taxes', ['tax_id'], ['id'], ['onDelete' => 'CASCADE']);
-        $table->addUniqueConstraint(['type_id', 'tax_id'], 'type_tax_unique');
+        $table->addForeignKeyConstraint('products', ['product_id'], ['id'], ['onDelete' => 'CASCADE']);
+        $table->addUniqueConstraint(['product_id', 'type_id'], 'product_type_unique');
     }
 
     public function down(Schema $schema): void
     {
-        $schema->dropTable('product_type_taxes');
+        $schema->dropTable('product_types');
     }
 }

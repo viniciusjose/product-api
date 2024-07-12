@@ -29,7 +29,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN docker-php-ext-configure intl
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
-RUN docker-php-ext-install pdo pdo_pgsql pgsql intl
+RUN docker-php-ext-install pdo pdo_pgsql pgsql intl decimal
 
 RUN groupadd --force -g $GROUP_ID $USER
 RUN useradd -ms /bin/bash --no-user-group -g $GROUP_ID -u 1337 $USER

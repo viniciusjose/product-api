@@ -45,7 +45,8 @@
     "nesbot/carbon": "^3.6",
     "slim/psr7": "^1.7",
     "slim/slim": "4.*",
-    "vlucas/phpdotenv": "v5.6"
+    "vlucas/phpdotenv": "v5.6",
+    "ext-decimal": "*"
   }
   ,
   "require-dev": {
