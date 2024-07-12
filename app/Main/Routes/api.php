@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Main\Factories\Adapters\Controller\Product\DestroyProductControllerFactory;
+use App\Main\Factories\Adapters\Controller\Product\ListProductControllerFactory;
+use App\Main\Factories\Adapters\Controller\Product\ShowProductControllerFactory;
+use App\Main\Factories\Adapters\Controller\Product\StoreProductControllerFactory;
+use App\Main\Factories\Adapters\Controller\Product\UpdateProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\DestroyTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\ShowTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\StoreTypeControllerFactory;
@@ -16,13 +21,13 @@ use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
     $app->group('/api', function (RouteCollectorProxy $app) {
-        //        $app->group('/products', function (RouteCollectorProxy $app) {
-//            $app->get('', ListProductControllerFactory::class);
-//            $app->post('', StoreProductControllerFactory::class);
-//            $app->get('/{id}', ShowProductControllerFactory::class);
-//            $app->put('/{id}', UpdateProductControllerFactory::class);
-//            $app->delete('/{id}', DestroyProductControllerFactory::class);
-//        });
+        $app->group('/products', function (RouteCollectorProxy $app) {
+            $app->get('', ListProductControllerFactory::class);
+            $app->post('', StoreProductControllerFactory::class);
+            $app->get('/{id}', ShowProductControllerFactory::class);
+            $app->put('/{id}', UpdateProductControllerFactory::class);
+            $app->delete('/{id}', DestroyProductControllerFactory::class);
+        });
 
         $app->group('/types', function (RouteCollectorProxy $app) {
             $app->get('', ListTypeControllerFactory::class);

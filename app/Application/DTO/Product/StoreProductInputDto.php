@@ -6,7 +6,7 @@ readonly class StoreProductInputDto
 {
     public function __construct(
         public string $name,
-        public float $price,
+        public string $price,
         public array $types = [],
     ) {
     }

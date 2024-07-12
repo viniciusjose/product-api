@@ -1,11 +1,11 @@
 <?php
 
 use App\Application\DTO\Tax\DestroyTaxInputDto;
-use App\Application\UseCase\Tax\DestroyTaxUseCase;
+use App\Application\UseCase\Tax\DestroyProductUseCase;
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
-use App\Domain\Exception\Tax\TaxDestroyException;
-use App\Domain\Exception\Tax\TaxNotFoundException;
+use App\Domain\Exception\Tax\ProductDestroyException;
+use App\Domain\Exception\Tax\ProductNotFoundException;
 use Carbon\Carbon;
 
 describe('DestroyTaxUseCase', function () {
@@ -28,11 +28,11 @@ describe('DestroyTaxUseCase', function () {
             ->shouldReceive('destroy')
             ->andReturn(1);
 
-        $this->sut = new DestroyTaxUseCase($repoMock);
+        $this->sut = new DestroyProductUseCase($repoMock);
     });
 
     it('should be instance of destroy tax use case', function () {
-        expect($this->sut)->toBeInstanceOf(DestroyTaxUseCase::class);
+        expect($this->sut)->toBeInstanceOf(DestroyProductUseCase::class);
     });
 
     it('should be destroy tax', function () {
@@ -50,12 +50,12 @@ describe('DestroyTaxUseCase', function () {
             ->shouldReceive('show')
             ->andReturn(null);
 
-        $sut = new DestroyTaxUseCase($repoMock);
+        $sut = new DestroyProductUseCase($repoMock);
 
         $sut->handle(
             new DestroyTaxInputDto(id: 1)
         );
-    })->throws(TaxNotFoundException::class);
+    })->throws(ProductNotFoundException::class);
 
     it('should be throw if tax could not be deleted', function () {
         $repoMock = Mockery::mock(ITaxRepository::class);
@@ -76,10 +76,10 @@ describe('DestroyTaxUseCase', function () {
             ->shouldReceive('destroy')
             ->andReturn(0);
 
-        $sut = new DestroyTaxUseCase($repoMock);
+        $sut = new DestroyProductUseCase($repoMock);
 
         $sut->handle(
             new DestroyTaxInputDto(id: 1)
         );
-    })->throws(TaxDestroyException::class);
+    })->throws(ProductDestroyException::class);
 });

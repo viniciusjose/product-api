@@ -3,8 +3,8 @@
 namespace App\Adapters\Controller\Product;
 
 use App\Adapters\Controller\Controller;
-use App\Application\UseCase\Product\ListProductesUseCase;
-use App\Domain\Queries\Product\ListProductesQuery;
+use App\Application\UseCase\Product\ListProductUseCase;
+use App\Domain\Queries\Product\ListProductQuery;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

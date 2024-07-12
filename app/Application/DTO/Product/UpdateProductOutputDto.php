@@ -12,7 +12,6 @@ readonly class UpdateProductOutputDto implements Arrayable
         public int $id,
         public string $name,
         public Decimal $price,
-        public int $productTypeId,
         public Carbon $createdAt,
         public Carbon $updatedAt,
     ) {

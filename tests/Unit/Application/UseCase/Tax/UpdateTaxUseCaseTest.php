@@ -2,12 +2,12 @@
 
 use App\Application\DTO\Tax\UpdateTaxInputDto;
 use App\Application\DTO\Tax\UpdateTaxOutputDto;
-use App\Application\UseCase\Tax\UpdateTaxUseCase;
+use App\Application\UseCase\Tax\UpdateProductUseCase;
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
-use App\Domain\Exception\Tax\TaxDuplicatedException;
-use App\Domain\Exception\Tax\TaxNotFoundException;
-use App\Domain\Exception\Tax\TaxUpdateException;
+use App\Domain\Exception\Tax\ProductDuplicatedException;
+use App\Domain\Exception\Tax\ProductNotFoundException;
+use App\Domain\Exception\Tax\ProductUpdateException;
 use Carbon\Carbon;
 
 describe('UpdateTaxUseCase', function () {
@@ -34,11 +34,11 @@ describe('UpdateTaxUseCase', function () {
             ->shouldReceive('update')
             ->andReturn(true);
 
-        $this->sut = new UpdateTaxUseCase($repoMock);
+        $this->sut = new UpdateProductUseCase($repoMock);
     });
 
     it('should be instance of update product type use case', function () {
-        self::assertInstanceOf(UpdateTaxUseCase::class, $this->sut);
+        self::assertInstanceOf(UpdateProductUseCase::class, $this->sut);
     });
 
     it('should be update product type', function () {
@@ -71,12 +71,12 @@ describe('UpdateTaxUseCase', function () {
         $repoMock->shouldReceive('getByName')
             ->andReturn(new Tax(name: 'Product Type New Name', percentage: 0.2));
 
-        $sut = new UpdateTaxUseCase($repoMock);
+        $sut = new UpdateProductUseCase($repoMock);
 
         $sut->handle(
             new UpdateTaxInputDto(id: 1, name: 'Product Type New Name', percentage: 0.2)
         );
-    })->throws(TaxDuplicatedException::class);
+    })->throws(ProductDuplicatedException::class);
 
     it('should be throw if product type dont exists', function () {
         $repoMock = Mockery::mock(ITaxRepository::class);
@@ -85,12 +85,12 @@ describe('UpdateTaxUseCase', function () {
             ->shouldReceive('show')
             ->andReturn(null);
 
-        $sut = new UpdateTaxUseCase($repoMock);
+        $sut = new UpdateProductUseCase($repoMock);
 
         $sut->handle(
             new UpdateTaxInputDto(id: 1, name: 'Product Type New Name', percentage: 0.2)
         );
-    })->throws(TaxNotFoundException::class);
+    })->throws(ProductNotFoundException::class);
 
     it('should be throw if product type could not updated', function () {
         $repoMock = Mockery::mock(ITaxRepository::class);
@@ -113,12 +113,12 @@ describe('UpdateTaxUseCase', function () {
         $repoMock->shouldReceive('update')
             ->andReturn(false);
 
-        $sut = new UpdateTaxUseCase($repoMock);
+        $sut = new UpdateProductUseCase($repoMock);
 
         $sut->handle(
             new UpdateTaxInputDto(id: 1, name: 'Product Type New Name', percentage: 0.2)
         );
-    })->throws(TaxUpdateException::class);
+    })->throws(ProductUpdateException::class);
 });
 
 

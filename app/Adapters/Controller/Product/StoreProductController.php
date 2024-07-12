@@ -6,6 +6,7 @@ use App\Adapters\Controller\Controller;
 use App\Application\DTO\Product\StoreProductInputDto;
 use App\Application\UseCase\Product\StoreProductUseCase;
 use App\Domain\Exception\Product\ProductDuplicatedException;
+use App\Domain\Exception\Product\ProductInvalidPriceException;
 use JsonException;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -23,6 +24,7 @@ class StoreProductController extends Controller
 
     /**
      * @throws ProductDuplicatedException
+     * @throws ProductInvalidPriceException
      */
     protected function perform(): Response
     {
@@ -30,7 +32,8 @@ class StoreProductController extends Controller
 
         $dto = new StoreProductInputDto(
             $request['name'],
-            $request['percentage']
+            $request['price'],
+            $request['types'] ?? []
         );
 
         $this->storeProductUseCase->handle($dto);

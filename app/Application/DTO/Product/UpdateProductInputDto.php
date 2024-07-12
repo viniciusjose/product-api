@@ -7,7 +7,7 @@ readonly class UpdateProductInputDto
     public function __construct(
         public string $id,
         public string $name,
-        public float $price,
+        public string $price,
         public array $types,
     ) {
     }

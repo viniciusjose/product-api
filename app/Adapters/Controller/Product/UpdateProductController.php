@@ -36,7 +36,8 @@ class UpdateProductController extends Controller
         $dto = new UpdateProductInputDto(
             id: $this->resolveArg('id'),
             name: $request['name'],
-            percentage: $request['percentage']
+            price: $request['price'],
+            types: $request['types'] ?? [],
         );
 
         $data = $this->updateProductUseCase->handle($dto);

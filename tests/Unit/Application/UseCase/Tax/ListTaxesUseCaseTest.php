@@ -1,6 +1,6 @@
 <?php
 
-use App\Application\UseCase\Tax\ListTaxesUseCase;
+use App\Application\UseCase\Tax\ListProductUseCase;
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Queries\Tax\ListTaxesQuery;
 use Carbon\Carbon;
@@ -21,11 +21,11 @@ describe('ListTaxesUseCase', function () {
                 ]
             ]);
 
-        $this->sut = new ListTaxesUseCase($this->productTypeRepoMock);
+        $this->sut = new ListProductUseCase($this->productTypeRepoMock);
     });
 
     it('should be instance of list taxes use case', function () {
-        expect($this->sut)->toBeInstanceOf(ListTaxesUseCase::class);
+        expect($this->sut)->toBeInstanceOf(ListProductUseCase::class);
     });
 
     it('should be list taxes', function () {
@@ -48,7 +48,7 @@ describe('ListTaxesUseCase', function () {
             ->shouldReceive('list')
             ->andReturn([]);
 
-        $sut = new ListTaxesUseCase($repoMock);
+        $sut = new ListProductUseCase($repoMock);
 
         $data = $sut->handle(
             new ListTaxesQuery(orderBy: ['name'])
