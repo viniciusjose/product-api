@@ -32,6 +32,6 @@ final class Version20240710042725 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-       $schema->dropTable('product_type_taxes');
+        $schema->dropTable('product_type_taxes');
     }
 }

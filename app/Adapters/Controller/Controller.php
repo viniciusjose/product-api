@@ -2,7 +2,6 @@
 
 namespace App\Adapters\Controller;
 
-
 use App\Domain\Exception\DomainException;
 use App\Domain\Exception\DomainRecordDuplicatedException;
 use App\Domain\Exception\DomainRecordNotFoundException;
