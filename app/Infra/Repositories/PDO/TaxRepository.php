@@ -2,7 +2,7 @@
 
 namespace App\Infra\Repositories\PDO;
 
-use App\Domain\Contract\Repositories\Taxes\ITaxRepository;
+use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
 use App\Domain\Queries\Taxes\ListTaxesQuery;
 use Carbon\Carbon;

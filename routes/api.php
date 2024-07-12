@@ -7,11 +7,11 @@ use App\Main\Factories\Adapters\Controller\ProductType\ShowProductTypeController
 use App\Main\Factories\Adapters\Controller\ProductType\StoreProductTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\ProductType\ListProductTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\ProductType\UpdateProductTypeControllerFactory;
-use App\Main\Factories\Adapters\Controller\Taxes\DestroyTaxesControllerFactory;
-use App\Main\Factories\Adapters\Controller\Taxes\ListTaxesControllerFactory;
-use App\Main\Factories\Adapters\Controller\Taxes\ShowTaxesControllerFactory;
-use App\Main\Factories\Adapters\Controller\Taxes\StoreTaxesControllerFactory;
-use App\Main\Factories\Adapters\Controller\Taxes\UpdateTaxesControllerFactory;
+use App\Main\Factories\Adapters\Controller\Tax\DestroyTaxControllerFactory;
+use App\Main\Factories\Adapters\Controller\Tax\ListTaxesControllerFactory;
+use App\Main\Factories\Adapters\Controller\Tax\ShowTaxControllerFactory;
+use App\Main\Factories\Adapters\Controller\Tax\StoreTaxControllerFactory;
+use App\Main\Factories\Adapters\Controller\Tax\UpdateTaxControllerFactory;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
@@ -34,10 +34,10 @@ return static function (RouteCollectorProxy $app) {
 
         $app->group('/taxes', function (RouteCollectorProxy $app) {
             $app->get('', ListTaxesControllerFactory::class);
-            $app->post('', StoreTaxesControllerFactory::class);
-            $app->get('/{id}', ShowTaxesControllerFactory::class);
-            $app->put('/{id}', UpdateTaxesControllerFactory::class);
-            $app->delete('/{id}', DestroyTaxesControllerFactory::class);
+            $app->post('', StoreTaxControllerFactory::class);
+            $app->get('/{id}', ShowTaxControllerFactory::class);
+            $app->put('/{id}', UpdateTaxControllerFactory::class);
+            $app->delete('/{id}', DestroyTaxControllerFactory::class);
         });
     });
 };
