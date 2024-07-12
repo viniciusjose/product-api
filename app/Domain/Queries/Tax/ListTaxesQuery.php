@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Queries\Taxes;
+namespace App\Domain\Queries\Tax;
 
 class ListTaxesQuery
 {

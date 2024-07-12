@@ -3,7 +3,7 @@
 namespace App\Application\UseCase\Tax;
 
 use App\Domain\Contract\Repositories\Tax\IListTax;
-use App\Domain\Queries\Taxes\ListTaxesQuery;
+use App\Domain\Queries\Tax\ListTaxesQuery;
 
 readonly class ListTaxesUseCase
 {

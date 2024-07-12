@@ -3,7 +3,7 @@
 namespace App\Adapters\Controller\Tax;
 
 use App\Adapters\Controller\Controller;
-use App\Application\DTO\Tax\ShowTaxesInputDto;
+use App\Application\DTO\Tax\ShowTaxInputDto;
 use App\Application\UseCase\Tax\ShowTaxUseCase;
 use App\Domain\Exception\Tax\TaxNotFoundException;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -26,7 +26,7 @@ class ShowTaxController extends Controller
      */
     protected function perform(): Response
     {
-        $dto = new ShowTaxesInputDto(
+        $dto = new ShowTaxInputDto(
             id: $this->resolveArg('id')
         );
 

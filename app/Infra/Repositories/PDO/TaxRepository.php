@@ -4,7 +4,7 @@ namespace App\Infra\Repositories\PDO;
 
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
-use App\Domain\Queries\Taxes\ListTaxesQuery;
+use App\Domain\Queries\Tax\ListTaxesQuery;
 use Carbon\Carbon;
 use PDO;
 

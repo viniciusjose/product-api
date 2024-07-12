@@ -4,6 +4,7 @@ use App\Application\DTO\ProductType\DestroyProductTypeInputDto;
 use App\Application\UseCase\ProductType\DestroyProductTypeUseCase;
 use App\Domain\Contract\Repositories\ProductType\IProductTypeRepository;
 use App\Domain\Entities\ProductType;
+use App\Domain\Exception\ProductType\ProductTypeDestroyException;
 use App\Domain\Exception\ProductType\ProductTypeNotFoundException;
 use Carbon\Carbon;
 
@@ -55,4 +56,30 @@ describe('DestroyProductTypeUseCase', function () {
             new DestroyProductTypeInputDto(id: 1)
         );
     })->throws(ProductTypeNotFoundException::class);
+
+    it('should be throw if product could not be deleted', function () {
+        $repoMock = Mockery::mock(IProductTypeRepository::class);
+
+        $repoMock
+            ->shouldReceive('show')
+            ->andReturn(
+                new ProductType(
+                    name: 'Product Type Name',
+                    id: 1,
+                    description: 'Product Type Description',
+                    createdAt: Carbon::now(),
+                    updatedAt: Carbon::now()
+                )
+            );
+
+        $repoMock
+            ->shouldReceive('destroy')
+            ->andReturn(0);
+
+        $sut = new DestroyProductTypeUseCase($repoMock);
+
+        $sut->handle(
+            new DestroyProductTypeInputDto(id: 1)
+        );
+    })->throws(ProductTypeDestroyException::class);
 });

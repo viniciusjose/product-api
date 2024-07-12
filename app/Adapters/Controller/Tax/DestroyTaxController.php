@@ -3,7 +3,7 @@
 namespace App\Adapters\Controller\Tax;
 
 use App\Adapters\Controller\Controller;
-use App\Application\DTO\Tax\DestroyTaxesInputDto;
+use App\Application\DTO\Tax\DestroyTaxInputDto;
 use App\Application\UseCase\Tax\DestroyTaxUseCase;
 use App\Domain\Exception\Tax\TaxDestroyException;
 use App\Domain\Exception\Tax\TaxNotFoundException;
@@ -27,7 +27,7 @@ class DestroyTaxController extends Controller
      */
     protected function perform(): Response
     {
-        $dto = new DestroyTaxesInputDto(
+        $dto = new DestroyTaxInputDto(
             id: $this->resolveArg('id')
         );
 

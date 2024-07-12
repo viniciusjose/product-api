@@ -2,9 +2,9 @@
 
 namespace App\Application\UseCase\Tax;
 
-use App\Application\DTO\Tax\StoreTaxesInputDto;
-use App\Application\DTO\Tax\UpdateTaxesInputDto;
-use App\Application\DTO\Tax\UpdateTaxesOutputDto;
+use App\Application\DTO\Tax\StoreTaxInputDto;
+use App\Application\DTO\Tax\UpdateTaxInputDto;
+use App\Application\DTO\Tax\UpdateTaxOutputDto;
 use App\Domain\Contract\Repositories\Tax\IGetByNameTax;
 use App\Domain\Contract\Repositories\Tax\IShowTax;
 use App\Domain\Contract\Repositories\Tax\IStoreTax;
@@ -27,7 +27,7 @@ readonly class UpdateTaxUseCase
      * @throws TaxNotFoundException
      * @throws TaxUpdateException
      */
-    public function handle(UpdateTaxesInputDto $input): UpdateTaxesOutputDto
+    public function handle(UpdateTaxInputDto $input): UpdateTaxOutputDto
     {
         $Taxes = $this->taxRepository->show($input->id);
 
@@ -51,7 +51,7 @@ readonly class UpdateTaxUseCase
             throw new TaxUpdateException('Tax could not be updated.');
         }
 
-        return new UpdateTaxesOutputDto(
+        return new UpdateTaxOutputDto(
             id: $Taxes->getId(),
             name: $Taxes->getName(),
             percentage: $Taxes->getPercentage(),

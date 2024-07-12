@@ -2,8 +2,8 @@
 
 namespace App\Application\UseCase\Tax;
 
-use App\Application\DTO\Tax\ShowTaxesInputDto;
-use App\Application\DTO\Tax\ShowTaxesOutputDto;
+use App\Application\DTO\Tax\ShowTaxInputDto;
+use App\Application\DTO\Tax\ShowTaxOutputDto;
 use App\Domain\Contract\Repositories\Tax\IShowTax;
 use App\Domain\Exception\Tax\TaxNotFoundException;
 
@@ -17,7 +17,7 @@ readonly class ShowTaxUseCase
     /**
      * @throws TaxNotFoundException
      */
-    public function handle(ShowTaxesInputDto $input): ShowTaxesOutputDto
+    public function handle(ShowTaxInputDto $input): ShowTaxOutputDto
     {
         $Taxes = $this->taxRepository->show($input->id);
 
@@ -25,7 +25,7 @@ readonly class ShowTaxUseCase
             throw new TaxNotFoundException('Tax not found.');
         }
 
-        return new ShowTaxesOutputDto(
+        return new ShowTaxOutputDto(
             id: $Taxes->getId(),
             name: $Taxes->getName(),
             percentage: $Taxes->getPercentage(),

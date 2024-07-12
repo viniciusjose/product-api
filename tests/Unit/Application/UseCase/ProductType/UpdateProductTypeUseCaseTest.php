@@ -37,11 +37,11 @@ describe('UpdateProductTypeUseCase', function () {
         $this->sut = new UpdateProductTypeUseCase($repoMock);
     });
 
-    test('it should be instance of update product type use case', function () {
-        self::assertInstanceOf(UpdateProductTypeUseCase::class, $this->sut);
+    it('should be instance of update product type use case', function () {
+        expect($this->sut)->toBeInstanceOf(UpdateProductTypeUseCase::class);
     });
 
-    test('it should be update product type', function () {
+    it('should be update product type', function () {
         $dto = $this->sut->handle(
             new UpdateProductTypeInputDto(id: 1, name: 'Product Type Name', description: 'Product Type Description')
         );
@@ -53,7 +53,7 @@ describe('UpdateProductTypeUseCase', function () {
             ->and($dto->description)->toBe('Product Type Description');
     });
 
-    test('it should be throw if product type name exists', function () {
+    it('should be throw if product type name exists', function () {
         $repoMock = Mockery::mock(IProductTypeRepository::class);
 
         $repoMock
@@ -78,7 +78,7 @@ describe('UpdateProductTypeUseCase', function () {
         );
     })->throws(ProductTypeDuplicatedException::class);
 
-    test('it should be throw if product type dont exists', function () {
+    it('should be throw if product type dont exists', function () {
         $repoMock = Mockery::mock(IProductTypeRepository::class);
 
         $repoMock
@@ -92,7 +92,7 @@ describe('UpdateProductTypeUseCase', function () {
         );
     })->throws(ProductTypeNotFoundException::class);
 
-    test('it should be throw if product type could not updated', function () {
+    it('should be throw if product type could not updated', function () {
         $repoMock = Mockery::mock(IProductTypeRepository::class);
 
         $repoMock
@@ -120,4 +120,6 @@ describe('UpdateProductTypeUseCase', function () {
         );
     })->throws(ProductTypeUpdateException::class);
 });
+
+
 

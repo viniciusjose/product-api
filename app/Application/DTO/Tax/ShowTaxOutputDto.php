@@ -2,10 +2,9 @@
 
 namespace App\Application\DTO\Tax;
 
-use App\Application\DTO\Arrayable;
 use Carbon\Carbon;
 
-readonly class UpdateTaxesOutputDto implements Arrayable
+readonly class ShowTaxOutputDto
 {
     public function __construct(
         public int $id,

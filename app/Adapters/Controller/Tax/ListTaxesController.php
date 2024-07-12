@@ -4,7 +4,7 @@ namespace App\Adapters\Controller\Tax;
 
 use App\Adapters\Controller\Controller;
 use App\Application\UseCase\Tax\ListTaxesUseCase;
-use App\Domain\Queries\Taxes\ListTaxesQuery;
+use App\Domain\Queries\Tax\ListTaxesQuery;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 

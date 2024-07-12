@@ -3,7 +3,7 @@
 namespace App\Adapters\Controller\Tax;
 
 use App\Adapters\Controller\Controller;
-use App\Application\DTO\Tax\UpdateTaxesInputDto;
+use App\Application\DTO\Tax\UpdateTaxInputDto;
 use App\Application\UseCase\Tax\UpdateTaxUseCase;
 use App\Domain\Exception\Tax\TaxDuplicatedException;
 use App\Domain\Exception\Tax\TaxNotFoundException;
@@ -33,7 +33,7 @@ class UpdateTaxController extends Controller
     {
         $request = $this->getFormData();
 
-        $dto = new UpdateTaxesInputDto(
+        $dto = new UpdateTaxInputDto(
             id: $this->resolveArg('id'),
             name: $request['name'],
             percentage: $request['percentage']

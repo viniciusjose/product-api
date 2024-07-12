@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Tax;
 
-use App\Application\DTO\Tax\StoreTaxesInputDto;
+use App\Application\DTO\Tax\StoreTaxInputDto;
 use App\Domain\Contract\Repositories\Tax\IGetByNameTax;
 use App\Domain\Contract\Repositories\Tax\IStoreTax;
 use App\Domain\Entities\Tax;
@@ -18,7 +18,7 @@ readonly class StoreTaxUseCase
     /**
      * @throws TaxDuplicatedException
      */
-    public function handle(StoreTaxesInputDto $input): void
+    public function handle(StoreTaxInputDto $input): void
     {
         $Taxes = $this->taxRepository->getByName($input->name);
 

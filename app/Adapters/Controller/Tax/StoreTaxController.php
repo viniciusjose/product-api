@@ -3,7 +3,7 @@
 namespace App\Adapters\Controller\Tax;
 
 use App\Adapters\Controller\Controller;
-use App\Application\DTO\Tax\StoreTaxesInputDto;
+use App\Application\DTO\Tax\StoreTaxInputDto;
 use App\Application\UseCase\Tax\StoreTaxUseCase;
 use App\Domain\Exception\Tax\TaxDuplicatedException;
 use JsonException;
@@ -28,7 +28,7 @@ class StoreTaxController extends Controller
     {
         $request = $this->getFormData();
 
-        $dto = new StoreTaxesInputDto(
+        $dto = new StoreTaxInputDto(
             $request['name'],
             $request['percentage']
         );

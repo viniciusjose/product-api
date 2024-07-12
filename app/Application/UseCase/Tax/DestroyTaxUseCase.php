@@ -2,7 +2,7 @@
 
 namespace App\Application\UseCase\Tax;
 
-use App\Application\DTO\Tax\DestroyTaxesInputDto;
+use App\Application\DTO\Tax\DestroyTaxInputDto;
 use App\Domain\Contract\Repositories\Tax\IDestroyTax;
 use App\Domain\Contract\Repositories\Tax\IShowTax;
 use App\Domain\Exception\Tax\TaxDestroyException;
@@ -19,7 +19,7 @@ readonly class DestroyTaxUseCase
      * @throws TaxNotFoundException
      * @throws TaxDestroyException
      */
-    public function handle(DestroyTaxesInputDto $input): void
+    public function handle(DestroyTaxInputDto $input): void
     {
         $Taxes = $this->taxRepository->show($input->id);
 

@@ -2,7 +2,7 @@
 
 namespace App\Application\DTO\Tax;
 
-readonly class DestroyTaxesInputDto
+readonly class ShowTaxInputDto
 {
     public function __construct(
         public string $id
