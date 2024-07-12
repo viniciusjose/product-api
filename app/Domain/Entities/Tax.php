@@ -2,17 +2,26 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\Exception\Tax\TaxInvalidPercentageException;
 use Carbon\Carbon;
 
 class Tax
 {
+    private float $percentage;
+
+    /**
+     * @throws TaxInvalidPercentageException
+     */
     public function __construct(
         private string $name,
-        private float $percentage,
+        float $percentage,
         readonly private ?int $id = null,
         private ?Carbon $createdAt = null,
         private ?Carbon $updatedAt = null,
     ) {
+        $this->validatePercentage($percentage);
+
+        $this->percentage = $percentage;
     }
 
     public function getName(): string
@@ -30,8 +39,13 @@ class Tax
         return $this->percentage;
     }
 
+    /**
+     * @throws TaxInvalidPercentageException
+     */
     public function setPercentage(float $percentage): void
     {
+        $this->validatePercentage($percentage);
+
         $this->percentage = $percentage;
     }
 
@@ -58,5 +72,15 @@ class Tax
     public function setUpdatedAt(?Carbon $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @throws TaxInvalidPercentageException
+     */
+    private function validatePercentage(float $percentage): void
+    {
+        if ($percentage <= 0.0) {
+            throw new TaxInvalidPercentageException('Tax percentage must be greater than 0.');
+        }
     }
 }
