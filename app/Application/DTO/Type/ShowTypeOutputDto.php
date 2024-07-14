@@ -11,7 +11,8 @@ readonly class ShowTypeOutputDto
         public string $name,
         public Carbon $createdAt,
         public Carbon $updatedAt,
-        public ?string $description = null
+        public ?string $description = null,
+        public ?array $taxes = []
     ) {
     }
 
@@ -22,7 +23,8 @@ readonly class ShowTypeOutputDto
             'name'        => $this->name,
             'description' => $this->description,
             'created_at'  => $this->createdAt->toDateTimeString(),
-            'updated_at'  => $this->updatedAt->toDateTimeString()
+            'updated_at'  => $this->updatedAt->toDateTimeString(),
+            'taxes'       => $this->taxes,
         ];
     }
 }

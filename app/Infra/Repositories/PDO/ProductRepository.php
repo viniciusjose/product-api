@@ -17,13 +17,52 @@ class ProductRepository implements IProductRepository
     ) {
     }
 
+    private const string DEFAULT_COLUMNS = <<<EOD
+        p.id,
+        p.name,
+        p.price,
+        p.created_at,
+        p.updated_at,
+        json_agg(t.*) as types
+    EOD;
+
+    public const string DEFAULT_GROUP_BY = <<<EOD
+        p.id,
+        p.name,
+        p.price,
+        p.created_at,
+        p.updated_at
+    EOD;
+
     public function list(ListProductQuery $query): array
     {
         $orderBy = implode(', ', $query->orderBy) ?? 'name';
-        $stmt = $this->db->query("SELECT * FROM products ORDER BY {$orderBy}");
+        $columns = self::DEFAULT_COLUMNS;
+        $groupBy = self::DEFAULT_GROUP_BY;
+
+        $stmt = $this->db->query(
+            <<<SQL
+                SELECT {$columns}
+                FROM products p
+                LEFT JOIN product_types pt ON p.id = pt.product_id
+                LEFT JOIN types t ON pt.type_id = t.id
+                GROUP BY {$groupBy}
+                ORDER BY p.{$orderBy}
+            SQL
+        );
         $stmt->execute();
 
-        $data = $stmt->fetchAll();
+        $data = $stmt->fetchAll(
+            PDO::FETCH_FUNC,
+            fn($id, $name, $price, $createdAt, $updatedAt, $types) => [
+                'id'         => $id,
+                'name'       => $name,
+                'price'      => $price,
+                'created_at' => Carbon::parse($createdAt),
+                'updated_at' => Carbon::parse($updatedAt),
+                'types'      => json_decode($types, true, 512, JSON_THROW_ON_ERROR)
+            ]
+        );
 
         if (!$data) {
             return [];
@@ -42,10 +81,24 @@ class ProductRepository implements IProductRepository
 
     /**
      * @throws ProductInvalidPriceException
+     * @throws \JsonException
      */
     public function show(int $id): ?Product
     {
-        $stmt = $this->db->prepare('SELECT * FROM products WHERE id = :id');
+        $columns = self::DEFAULT_COLUMNS;
+        $groupBy = self::DEFAULT_GROUP_BY;
+
+        $stmt = $this->db->prepare(
+            <<<SQL
+                SELECT {$columns}
+                FROM products p
+                LEFT JOIN product_types pt ON p.id = pt.product_id
+                LEFT JOIN types t ON pt.type_id = t.id
+                WHERE p.id = :id
+                GROUP BY {$groupBy}
+            SQL
+        );
+
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
@@ -57,10 +110,11 @@ class ProductRepository implements IProductRepository
 
         return new Product(
             name: $data['name'],
-            price: new Decimal((string) $data['price']),
+            price: new Decimal((string)$data['price']),
             id: $data['id'],
             createdAt: Carbon::parse($data['created_at']),
-            updatedAt: Carbon::parse($data['updated_at'])
+            updatedAt: Carbon::parse($data['updated_at']),
+            types: json_decode($data['types'], true, 512, JSON_THROW_ON_ERROR)
         );
     }
 
@@ -80,7 +134,7 @@ class ProductRepository implements IProductRepository
 
         return new Product(
             name: $data['name'],
-            price: new Decimal((string) $data['price']),
+            price: new Decimal((string)$data['price']),
             id: $data['id'],
             createdAt: Carbon::parse($data['created_at']),
             updatedAt: Carbon::parse($data['updated_at'])
@@ -111,6 +165,36 @@ class ProductRepository implements IProductRepository
     public function destroy(int $id): int
     {
         $stmt = $this->db->prepare('DELETE FROM products WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
+
+    public function attachTypes(array $types): void
+    {
+        $placeholders = [];
+        $values = [];
+
+        foreach ($types as $type) {
+            $placeholders[] = "(?, ?)";
+
+            $values[] = $type['product_id'];
+            $values[] = $type['type_id'];
+        }
+
+        $placeholders = implode(", ", $placeholders);
+
+        $stmt = $this->db->prepare(
+            "INSERT INTO product_types (product_id, type_id) VALUES {$placeholders}"
+        );
+
+        $stmt->execute($values);
+    }
+
+    public function detachTypes(int $id): int
+    {
+        $stmt = $this->db->prepare('DELETE FROM product_types WHERE product_id = :id');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 

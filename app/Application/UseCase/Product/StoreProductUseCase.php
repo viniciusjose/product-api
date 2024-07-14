@@ -3,6 +3,7 @@
 namespace App\Application\UseCase\Product;
 
 use App\Application\DTO\Product\StoreProductInputDto;
+use App\Domain\Contract\Repositories\Product\IAttachTypes;
 use App\Domain\Contract\Repositories\Product\IGetByNameProduct;
 use App\Domain\Contract\Repositories\Product\IStoreProduct;
 use App\Domain\Entities\Product;
@@ -13,7 +14,7 @@ use Decimal\Decimal;
 readonly class StoreProductUseCase
 {
     public function __construct(
-        protected IStoreProduct|IGetByNameProduct $productRepository
+        protected IStoreProduct|IGetByNameProduct|IAttachTypes $productRepository
     ) {
     }
 
@@ -34,6 +35,13 @@ readonly class StoreProductUseCase
             price: new Decimal($input->price)
         );
 
-        $this->productRepository->store($product);
+        $id = $this->productRepository->store($product);
+
+        if ($input->types) {
+            $this->productRepository->attachTypes(array_map(fn ($type) => [
+                'product_id' => $id,
+                'type_id' => $type['id']
+            ], $input->types));
+        }
     }
 }

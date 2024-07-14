@@ -12,6 +12,7 @@ class Type
         private ?string $description = null,
         private ?Carbon $createdAt = null,
         private ?Carbon $updatedAt = null,
+        private ?array $taxes = [],
     ) {
     }
 
@@ -59,5 +60,15 @@ class Type
     public function setUpdatedAt(Carbon $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    public function getTaxes(): ?array
+    {
+        return $this->taxes;
+    }
+
+    public function setTaxes(?array $taxes): void
+    {
+        $this->taxes = $taxes;
     }
 }

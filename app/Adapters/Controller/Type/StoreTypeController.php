@@ -30,7 +30,8 @@ class StoreTypeController extends Controller
 
         $dto = new StoreTypeInputDto(
             $request['name'],
-            $request['description'] ?? null
+            $request['description'] ?? null,
+            taxes: $request['taxes'] ?? []
         );
 
         $this->storeTypeUseCase->handle($dto);

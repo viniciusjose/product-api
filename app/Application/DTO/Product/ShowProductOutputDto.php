@@ -13,6 +13,7 @@ readonly class ShowProductOutputDto
         public Decimal $price,
         public Carbon $createdAt,
         public Carbon $updatedAt,
+        public ?array $types = [],
     ) {
     }
 
@@ -22,6 +23,7 @@ readonly class ShowProductOutputDto
             'id'              => $this->id,
             'name'            => $this->name,
             'price'           => $this->price->toFloat(),
+            'types'           => $this->types,
             'created_at'      => $this->createdAt->toDateTimeString(),
             'updated_at'      => $this->updatedAt->toDateTimeString()
         ];

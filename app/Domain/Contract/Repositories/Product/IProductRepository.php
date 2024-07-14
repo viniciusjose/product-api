@@ -8,6 +8,8 @@ interface IProductRepository extends
     IStoreProduct,
     IUpdateProduct,
     IDestroyProduct,
-    IGetByNameProduct
+    IGetByNameProduct,
+    IAttachTypes,
+    IDetachTypes
 {
 }

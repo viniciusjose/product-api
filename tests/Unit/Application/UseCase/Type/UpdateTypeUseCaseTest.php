@@ -34,6 +34,14 @@ describe('UpdateTypeUseCase', function () {
             ->shouldReceive('update')
             ->andReturn(true);
 
+        $repoMock
+            ->shouldReceive('attachTaxes')
+            ->andReturn();
+
+        $repoMock
+            ->shouldReceive('detachTaxes')
+            ->andReturn();
+
         $this->sut = new UpdateTypeUseCase($repoMock);
     });
 
@@ -43,7 +51,7 @@ describe('UpdateTypeUseCase', function () {
 
     it('should be update type', function () {
         $dto = $this->sut->handle(
-            new UpdateTypeInputDto(id: 1, name: 'Type Name', description: 'Type Description')
+            new UpdateTypeInputDto(id: 1, name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
 
         expect($dto)->toBeInstanceOf(UpdateTypeOutputDto::class)
@@ -74,7 +82,7 @@ describe('UpdateTypeUseCase', function () {
         $sut = new UpdateTypeUseCase($repoMock);
 
         $sut->handle(
-            new UpdateTypeInputDto(id: 1, name: 'Type New Name', description: 'Type Description')
+            new UpdateTypeInputDto(id: 1, name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
     })->throws(TypeDuplicatedException::class);
 
@@ -88,7 +96,7 @@ describe('UpdateTypeUseCase', function () {
         $sut = new UpdateTypeUseCase($repoMock);
 
         $sut->handle(
-            new UpdateTypeInputDto(id: 1, name: 'Type New Name', description: 'Type Description')
+            new UpdateTypeInputDto(id: 1, name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
     })->throws(TypeNotFoundException::class);
 
@@ -116,7 +124,7 @@ describe('UpdateTypeUseCase', function () {
         $sut = new UpdateTypeUseCase($repoMock);
 
         $sut->handle(
-            new UpdateTypeInputDto(id: 1, name: 'Type New Name', description: 'Type Description')
+            new UpdateTypeInputDto(id: 1, name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
     })->throws(TypeUpdateException::class);
 });

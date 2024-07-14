@@ -8,6 +8,8 @@ interface ITypeRepository extends
     IStoreType,
     IUpdateType,
     IDestroyType,
-    IGetByNameType
+    IGetByNameType,
+    IAttachTaxes,
+    IDetachTaxes
 {
 }

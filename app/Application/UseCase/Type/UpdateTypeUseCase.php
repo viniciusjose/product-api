@@ -4,6 +4,8 @@ namespace App\Application\UseCase\Type;
 
 use App\Application\DTO\Type\UpdateTypeInputDto;
 use App\Application\DTO\Type\UpdateTypeOutputDto;
+use App\Domain\Contract\Repositories\Type\IAttachTaxes;
+use App\Domain\Contract\Repositories\Type\IDetachTaxes;
 use App\Domain\Contract\Repositories\Type\IGetByNameType;
 use App\Domain\Contract\Repositories\Type\IShowType;
 use App\Domain\Contract\Repositories\Type\IUpdateType;
@@ -15,7 +17,7 @@ use Carbon\Carbon;
 readonly class UpdateTypeUseCase
 {
     public function __construct(
-        protected IUpdateType|IGetByNameType|IShowType $typeRepository
+        protected IUpdateType|IGetByNameType|IShowType|IAttachTaxes|IDetachTaxes $typeRepository
     ) {
     }
 
@@ -23,6 +25,7 @@ readonly class UpdateTypeUseCase
      * @throws TypeDuplicatedException
      * @throws TypeNotFoundException
      * @throws TypeUpdateException
+     * @throws \JsonException
      */
     public function handle(UpdateTypeInputDto $input): UpdateTypeOutputDto
     {
@@ -48,6 +51,15 @@ readonly class UpdateTypeUseCase
 
         if (!$updated) {
             throw new TypeUpdateException('Product type could not be updated.');
+        }
+
+        if (!empty($input->taxes)) {
+            $this->typeRepository->detachTaxes($type->getId());
+
+            $this->typeRepository->attachTaxes(array_map(static fn($tax) => [
+                'type_id' => $type->getId(),
+                'tax_id'  => $tax['id']
+            ], $input->taxes));
         }
 
         return new UpdateTypeOutputDto(

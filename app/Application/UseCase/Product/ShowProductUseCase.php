@@ -30,7 +30,8 @@ readonly class ShowProductUseCase
             name: $product->getName(),
             price: $product->getPrice(),
             createdAt: $product->getCreatedAt(),
-            updatedAt: $product->getUpdatedAt()
+            updatedAt: $product->getUpdatedAt(),
+            types: $product->getTypes()
         );
     }
 }

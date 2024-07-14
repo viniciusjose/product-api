@@ -18,7 +18,8 @@ class Product
         Decimal $price,
         private readonly ?string $id = null,
         private ?Carbon $createdAt = null,
-        private ?Carbon $updatedAt = null
+        private ?Carbon $updatedAt = null,
+        private ?array $types = []
     ) {
         $this->validatePrice($price);
 
@@ -87,5 +88,15 @@ class Product
         if ($price <= 0.0) {
             throw new ProductInvalidPriceException('Tax percentage must be greater than 0.');
         }
+    }
+
+    public function getTypes(): ?array
+    {
+        return $this->types;
+    }
+
+    public function setTypes(?array $types): void
+    {
+        $this->types = $types;
     }
 }

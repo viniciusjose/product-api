@@ -28,7 +28,7 @@ class ListProductController extends Controller
 
         $data = $this->listProductUseCase->handle(
             new ListProductQuery(
-                orderBy: explode(',', $query['orderBy'])
+                orderBy: explode(',', $query['orderBy'] ?? 'name'),
             )
         );
 

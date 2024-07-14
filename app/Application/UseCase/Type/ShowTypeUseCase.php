@@ -30,7 +30,8 @@ readonly class ShowTypeUseCase
             name: $Type->getName(),
             createdAt: $Type->getCreatedAt(),
             updatedAt: $Type->getUpdatedAt(),
-            description: $Type->getDescription()
+            description: $Type->getDescription(),
+            taxes: $Type->getTaxes()
         );
     }
 }

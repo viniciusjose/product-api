@@ -38,7 +38,8 @@ class UpdateTypeController extends Controller
         $dto = new UpdateTypeInputDto(
             id: $this->resolveArg('id'),
             name: $request['name'],
-            description: $request['description'] ?? null
+            description: $request['description'] ?? null,
+            taxes: $request['taxes'] ?? []
         );
 
         $data = $this->updateTypeUseCase->handle($dto);

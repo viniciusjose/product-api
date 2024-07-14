@@ -5,6 +5,8 @@ namespace App\Application\UseCase\Product;
 use App\Application\DTO\Product\StoreProductInputDto;
 use App\Application\DTO\Product\UpdateProductInputDto;
 use App\Application\DTO\Product\UpdateProductOutputDto;
+use App\Domain\Contract\Repositories\Product\IAttachTypes;
+use App\Domain\Contract\Repositories\Product\IDetachTypes;
 use App\Domain\Contract\Repositories\Product\IGetByNameProduct;
 use App\Domain\Contract\Repositories\Product\IShowProduct;
 use App\Domain\Contract\Repositories\Product\IStoreProduct;
@@ -20,7 +22,7 @@ use Decimal\Decimal;
 readonly class UpdateProductUseCase
 {
     public function __construct(
-        protected IUpdateProduct|IGetByNameProduct|IShowProduct $productRepository
+        protected IUpdateProduct|IGetByNameProduct|IShowProduct|IAttachTypes|IDetachTypes $productRepository
     ) {
     }
 
@@ -53,6 +55,15 @@ readonly class UpdateProductUseCase
 
         if (!$updated) {
             throw new ProductUpdateException('Product could not be updated.');
+        }
+
+        if (!empty($input->types)) {
+            $this->productRepository->detachTypes($product->getId());
+
+            $this->productRepository->attachTypes(array_map(static fn($type) => [
+                'product_id' => $product->getId(),
+                'type_id'    => $type['id']
+            ], $input->types));
         }
 
         return new UpdateProductOutputDto(

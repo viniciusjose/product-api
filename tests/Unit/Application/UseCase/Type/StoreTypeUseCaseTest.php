@@ -17,6 +17,10 @@ describe('StoreTypeUseCase', function () {
             ->shouldReceive('store')
             ->andReturn(1);
 
+        $repoMock
+            ->shouldReceive('attachTaxes')
+            ->andReturn();
+
         $this->sut = new StoreTypeUseCase($repoMock);
     });
 
@@ -26,7 +30,7 @@ describe('StoreTypeUseCase', function () {
 
     it('should be store type', function () {
         $this->sut->handle(
-            new StoreTypeInputDto(name: 'Type Name', description: 'Type Description')
+            new StoreTypeInputDto(name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
 
         expect(true)->toBeTrue();
@@ -41,7 +45,7 @@ describe('StoreTypeUseCase', function () {
         $sut = new StoreTypeUseCase($repoMock);
 
         $sut->handle(
-            new StoreTypeInputDto(name: 'Type Name', description: 'Type Description')
+            new StoreTypeInputDto(name: 'Type Name', description: 'Type Description', taxes: [['id' => 1]])
         );
     })->throws(TypeDuplicatedException::class);
 });
