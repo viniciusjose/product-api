@@ -54,7 +54,7 @@ class ProductRepository implements IProductRepository
 
         $data = $stmt->fetchAll(
             PDO::FETCH_FUNC,
-            fn($id, $name, $price, $createdAt, $updatedAt, $types) => [
+            fn ($id, $name, $price, $createdAt, $updatedAt, $types) => [
                 'id'         => $id,
                 'name'       => $name,
                 'price'      => $price,

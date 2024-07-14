@@ -56,7 +56,7 @@ readonly class UpdateTypeUseCase
         if (!empty($input->taxes)) {
             $this->typeRepository->detachTaxes($type->getId());
 
-            $this->typeRepository->attachTaxes(array_map(static fn($tax) => [
+            $this->typeRepository->attachTaxes(array_map(static fn ($tax) => [
                 'type_id' => $type->getId(),
                 'tax_id'  => $tax['id']
             ], $input->taxes));

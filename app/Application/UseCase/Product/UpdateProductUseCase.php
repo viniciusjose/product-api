@@ -60,7 +60,7 @@ readonly class UpdateProductUseCase
         if (!empty($input->types)) {
             $this->productRepository->detachTypes($product->getId());
 
-            $this->productRepository->attachTypes(array_map(static fn($type) => [
+            $this->productRepository->attachTypes(array_map(static fn ($type) => [
                 'product_id' => $product->getId(),
                 'type_id'    => $type['id']
             ], $input->types));

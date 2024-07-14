@@ -52,7 +52,7 @@ class TypeRepository implements ITypeRepository
 
         $data = $stmt->fetchAll(
             PDO::FETCH_FUNC,
-            fn($id, $name, $description, $createdAt, $updatedAt, $taxes) => [
+            fn ($id, $name, $description, $createdAt, $updatedAt, $taxes) => [
                 'id'          => $id,
                 'name'        => $name,
                 'description' => $description,
