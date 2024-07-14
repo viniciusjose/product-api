@@ -28,7 +28,7 @@ class ListTypeController extends Controller
 
         $data = $this->listTypeUseCase->handle(
             new ListTypeQuery(
-                orderBy: explode(',', $query['orderBy'])
+                orderBy: explode(',', $query['orderBy'] ?? 'name')
             )
         );
 

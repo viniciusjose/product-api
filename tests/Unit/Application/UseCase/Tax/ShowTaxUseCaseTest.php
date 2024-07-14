@@ -2,10 +2,10 @@
 
 use App\Application\DTO\Tax\ShowTaxInputDto;
 use App\Application\DTO\Tax\ShowTaxOutputDto;
-use App\Application\UseCase\Tax\ShowProductUseCase;
+use App\Application\UseCase\Tax\ShowTaxUseCase;
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
-use App\Domain\Exception\Tax\ProductNotFoundException;
+use App\Domain\Exception\Tax\TaxNotFoundException;
 use Carbon\Carbon;
 
 describe('ShowTaxUseCase', function () {
@@ -24,11 +24,11 @@ describe('ShowTaxUseCase', function () {
                 )
             );
 
-        $this->sut = new ShowProductUseCase($repoMock);
+        $this->sut = new ShowTaxUseCase($repoMock);
     });
 
     it('should be instance of show tax use case', function () {
-        expect($this->sut)->toBeInstanceOf(ShowProductUseCase::class);
+        expect($this->sut)->toBeInstanceOf(ShowTaxUseCase::class);
     });
 
     it('should be show tax', function () {
@@ -50,10 +50,10 @@ describe('ShowTaxUseCase', function () {
             ->shouldReceive('show')
             ->andReturn(null);
 
-        $sut = new ShowProductUseCase($repoMock);
+        $sut = new ShowTaxUseCase($repoMock);
 
         $sut->handle(
             new ShowTaxInputDto(id: 1)
         );
-    })->throws(ProductNotFoundException::class);
+    })->throws(TaxNotFoundException::class);
 });

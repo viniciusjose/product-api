@@ -17,10 +17,9 @@ class TypeRepository implements ITypeRepository
 
     public function list(ListTypeQuery $query): array
     {
-        $stmt = $this->db->prepare('SELECT * FROM types ORDER BY :orderBy');
         $orderBy = implode(', ', $query->orderBy) ?? 'name';
-        $stmt->bindParam(':orderBy', $orderBy);
-        $stmt->execute();
+
+        $stmt = $this->db->query("SELECT * FROM types ORDER BY {$orderBy}");
 
         $data = $stmt->fetchAll();
 

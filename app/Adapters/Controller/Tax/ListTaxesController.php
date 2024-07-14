@@ -28,7 +28,7 @@ class ListTaxesController extends Controller
 
         $data = $this->listTaxesUseCase->handle(
             new ListTaxesQuery(
-                orderBy: explode(',', $query['orderBy'])
+                orderBy: explode(',', $query['orderBy'] ?? 'name')
             )
         );
 

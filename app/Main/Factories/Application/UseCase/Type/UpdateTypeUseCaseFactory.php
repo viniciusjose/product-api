@@ -10,7 +10,7 @@ class UpdateTypeUseCaseFactory
     public static function make(): UpdateTypeUseCase
     {
         return new UpdateTypeUseCase(
-            TypeRepository: TypeRepositoryFactory::make()
+            typeRepository: TypeRepositoryFactory::make()
         );
     }
 }

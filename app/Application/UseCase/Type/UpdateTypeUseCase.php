@@ -2,14 +2,11 @@
 
 namespace App\Application\UseCase\Type;
 
-use App\Application\DTO\Type\StoreTypeInputDto;
 use App\Application\DTO\Type\UpdateTypeInputDto;
 use App\Application\DTO\Type\UpdateTypeOutputDto;
 use App\Domain\Contract\Repositories\Type\IGetByNameType;
 use App\Domain\Contract\Repositories\Type\IShowType;
-use App\Domain\Contract\Repositories\Type\IStoreType;
 use App\Domain\Contract\Repositories\Type\IUpdateType;
-use App\Domain\Entities\Type;
 use App\Domain\Exception\Type\TypeDuplicatedException;
 use App\Domain\Exception\Type\TypeNotFoundException;
 use App\Domain\Exception\Type\TypeUpdateException;
@@ -29,34 +26,36 @@ readonly class UpdateTypeUseCase
      */
     public function handle(UpdateTypeInputDto $input): UpdateTypeOutputDto
     {
-        $Type = $this->typeRepository->show($input->id);
+        $type = $this->typeRepository->show($input->id);
 
-        if ($Type === null) {
+        if ($type === null) {
             throw new TypeNotFoundException('Product type not found.');
         }
 
         $duplicated = $this->typeRepository->getByName($input->name);
 
-        if ($duplicated && $Type->getName() !== $duplicated?->getName()) {
+        if ($duplicated && $type->getName() !== $duplicated?->getName()) {
             throw new TypeDuplicatedException('Product type name already exists.');
         }
 
-        $Type->setName($input->name);
-        $Type->setDescription($input->description);
-        $Type->setUpdatedAt(Carbon::now());
+        $type->setName($input->name);
+        if ($input->description !== null) {
+            $type->setDescription($input->description);
+        }
+        $type->setUpdatedAt(Carbon::now());
 
-        $updated = $this->typeRepository->update($Type);
+        $updated = $this->typeRepository->update($type);
 
         if (!$updated) {
             throw new TypeUpdateException('Product type could not be updated.');
         }
 
         return new UpdateTypeOutputDto(
-            id: $Type->getId(),
-            name: $Type->getName(),
-            createdAt: $Type->getCreatedAt(),
-            updatedAt: $Type->getUpdatedAt(),
-            description: $Type->getDescription()
+            id: $type->getId(),
+            name: $type->getName(),
+            createdAt: $type->getCreatedAt(),
+            updatedAt: $type->getUpdatedAt(),
+            description: $type->getDescription()
         );
     }
 }

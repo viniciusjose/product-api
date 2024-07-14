@@ -1,10 +1,10 @@
 <?php
 
 use App\Application\DTO\Tax\StoreTaxInputDto;
-use App\Application\UseCase\Tax\StoreProductUseCase;
+use App\Application\UseCase\Tax\StoreTaxUseCase;
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
-use App\Domain\Exception\Tax\ProductDuplicatedException;
+use App\Domain\Exception\Tax\TaxDuplicatedException;
 
 describe('StoreTaxUseCase', function () {
     beforeEach(function () {
@@ -17,11 +17,11 @@ describe('StoreTaxUseCase', function () {
             ->shouldReceive('store')
             ->andReturn(1);
 
-        $this->sut = new StoreProductUseCase($repoMock);
+        $this->sut = new StoreTaxUseCase($repoMock);
     });
 
     it('should be instance of store tax use case', function () {
-        expect($this->sut)->toBeInstanceOf(StoreProductUseCase::class);
+        expect($this->sut)->toBeInstanceOf(StoreTaxUseCase::class);
     });
 
     it('should be store tax', function () {
@@ -38,10 +38,10 @@ describe('StoreTaxUseCase', function () {
         $repoMock->shouldReceive('getByName')
             ->andReturn(new Tax(name: 'Any tax nam', percentage: 0.2));
 
-        $sut = new StoreProductUseCase($repoMock);
+        $sut = new StoreTaxUseCase($repoMock);
 
         $sut->handle(
             new StoreTaxInputDto(name: 'Any tax nam', percentage: 0.2)
         );
-    })->throws(ProductDuplicatedException::class);
+    })->throws(TaxDuplicatedException::class);
 });

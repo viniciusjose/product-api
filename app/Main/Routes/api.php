@@ -20,6 +20,10 @@ use App\Main\Factories\Adapters\Controller\Tax\UpdateTaxControllerFactory;
 use Slim\Routing\RouteCollectorProxy;
 
 return static function (RouteCollectorProxy $app) {
+    $app->options('/{routes:.+}', function ($request, $response, $args) {
+        return $response;
+    });
+
     $app->group('/api', function (RouteCollectorProxy $app) {
         $app->group('/products', function (RouteCollectorProxy $app) {
             $app->get('', ListProductControllerFactory::class);

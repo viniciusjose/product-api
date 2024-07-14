@@ -19,9 +19,8 @@ class ProductRepository implements IProductRepository
 
     public function list(ListProductQuery $query): array
     {
-        $stmt = $this->db->prepare('SELECT * FROM products ORDER BY :orderBy');
         $orderBy = implode(', ', $query->orderBy) ?? 'name';
-        $stmt->bindParam(':orderBy', $orderBy);
+        $stmt = $this->db->query("SELECT * FROM products ORDER BY {$orderBy}");
         $stmt->execute();
 
         $data = $stmt->fetchAll();

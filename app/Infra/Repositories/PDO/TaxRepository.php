@@ -17,11 +17,8 @@ class TaxRepository implements ITaxRepository
 
     public function list(ListTaxesQuery $query): array
     {
-        $stmt = $this->db->prepare('SELECT * FROM taxes ORDER BY :orderBy');
-        $orderBy = implode(', ', $query->orderBy) ?? 'name';
-        $stmt->bindParam(':orderBy', $orderBy);
-        $stmt->execute();
-
+        $orderBy = implode(', ', $query->orderBy);
+        $stmt = $this->db->query("SELECT * FROM taxes ORDER BY {$orderBy}");
         $data = $stmt->fetchAll();
 
         if (!$data) {
