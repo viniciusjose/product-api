@@ -56,7 +56,7 @@ class SaleRepository implements ISaleRepository
 
     public function list(ListSaleQuery $query): array
     {
-        $orderBy = implode(', ', $query->orderBy) ?? 'name';
+        $orderBy = implode(', ', $query->orderBy) ?? 'id';
         $columns = self::DEFAULT_COLUMNS;
         $groupBy = self::DEFAULT_GROUP_BY;
 
@@ -67,7 +67,7 @@ class SaleRepository implements ISaleRepository
                 LEFT JOIN sale_items si ON s.id = si.sale_id
                 LEFT JOIN products p ON si.product_id = p.id
                 GROUP BY {$groupBy}
-                ORDER BY s.{$orderBy}
+                ORDER BY s.{$orderBy} DESC
             SQL
         );
         $stmt->execute();
