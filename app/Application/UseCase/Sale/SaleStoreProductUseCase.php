@@ -55,12 +55,12 @@ readonly class SaleStoreProductUseCase
         }
 
         $categories = array_map(
-            static fn($category) => $category['id'],
+            static fn ($category) => $category['id'],
             $product->getTypes()
         );
 
         $taxes = array_map(
-            static fn($tax) => $tax['percentage'],
+            static fn ($tax) => $tax['percentage'],
             $this->taxRepository->getTotalTaxByTypes($categories)
         );
 
