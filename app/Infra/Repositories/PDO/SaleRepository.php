@@ -74,7 +74,7 @@ class SaleRepository implements ISaleRepository
 
         $data = $stmt->fetchAll(
             PDO::FETCH_FUNC,
-            fn(
+            fn (
                 $id,
                 $customer,
                 $email,
