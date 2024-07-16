@@ -7,6 +7,11 @@ use App\Main\Factories\Adapters\Controller\Product\ListProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Product\ShowProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Product\StoreProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Product\UpdateProductControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\DestroySaleControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\ListSaleControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\ShowSaleControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\StoreSaleControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\UpdateSaleControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\DestroyTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\ShowTypeControllerFactory;
 use App\Main\Factories\Adapters\Controller\Type\StoreTypeControllerFactory;
@@ -25,6 +30,14 @@ return static function (RouteCollectorProxy $app) {
     });
 
     $app->group('/api', function (RouteCollectorProxy $app) {
+        $app->group('/sales', function (RouteCollectorProxy $app) {
+            $app->get('', ListSaleControllerFactory::class);
+            $app->post('', StoreSaleControllerFactory::class);
+            $app->get('/{id}', ShowSaleControllerFactory::class);
+            $app->put('/{id}', UpdateSaleControllerFactory::class);
+            $app->delete('/{id}', DestroySaleControllerFactory::class);
+        });
+
         $app->group('/products', function (RouteCollectorProxy $app) {
             $app->get('', ListProductControllerFactory::class);
             $app->post('', StoreProductControllerFactory::class);
