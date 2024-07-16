@@ -9,6 +9,7 @@ use App\Main\Factories\Adapters\Controller\Product\StoreProductControllerFactory
 use App\Main\Factories\Adapters\Controller\Product\UpdateProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Sale\DestroySaleControllerFactory;
 use App\Main\Factories\Adapters\Controller\Sale\ListSaleControllerFactory;
+use App\Main\Factories\Adapters\Controller\Sale\SaleStoreProductControllerFactory;
 use App\Main\Factories\Adapters\Controller\Sale\ShowSaleControllerFactory;
 use App\Main\Factories\Adapters\Controller\Sale\StoreSaleControllerFactory;
 use App\Main\Factories\Adapters\Controller\Sale\UpdateSaleControllerFactory;
@@ -36,6 +37,7 @@ return static function (RouteCollectorProxy $app) {
             $app->get('/{id}', ShowSaleControllerFactory::class);
             $app->put('/{id}', UpdateSaleControllerFactory::class);
             $app->delete('/{id}', DestroySaleControllerFactory::class);
+            $app->post('/{id}/products', SaleStoreProductControllerFactory::class);
         });
 
         $app->group('/products', function (RouteCollectorProxy $app) {

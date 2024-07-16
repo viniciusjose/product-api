@@ -4,7 +4,6 @@ namespace App\Infra\Repositories\PDO;
 
 use App\Domain\Contract\Repositories\Sale\ISaleRepository;
 use App\Domain\Entities\Sale;
-use App\Domain\Exception\Sale\SaleInvalidPriceException;
 use App\Domain\Queries\Sale\ListSaleQuery;
 use Carbon\Carbon;
 use Decimal\Decimal;
@@ -28,7 +27,7 @@ class SaleRepository implements ISaleRepository
         s.description,
         coalesce(sum(si.price), 0)::numeric(10, 2) as amount,
         coalesce(sum(si.taxes_amount), 0)::numeric(10, 2) as taxes_amount,
-        coalesce(sum(si.amount), 0)::numeric(10, 2)       as total_amount,
+        coalesce(sum(si.amount), 0)::numeric(10, 2) as total_amount,
         CASE WHEN count(si.*) > 0 THEN
             json_agg(json_build_object(
             'id', p.id,
@@ -220,7 +219,7 @@ class SaleRepository implements ISaleRepository
 
     public function destroy(int $id): int
     {
-        $stmt = $this->db->prepare('DELETE FROM Sales WHERE id = :id');
+        $stmt = $this->db->prepare('DELETE FROM sales WHERE id = :id');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 

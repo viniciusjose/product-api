@@ -8,6 +8,7 @@ interface ITaxRepository extends
     IStoreTax,
     IUpdateTax,
     IDestroyTax,
-    IGetByNameTax
+    IGetByNameTax,
+    IGetTotalTaxByTypes
 {
 }

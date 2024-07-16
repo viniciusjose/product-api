@@ -4,6 +4,7 @@ namespace App\Infra\Repositories\PDO;
 
 use App\Domain\Contract\Repositories\Tax\ITaxRepository;
 use App\Domain\Entities\Tax;
+use App\Domain\Exception\Tax\TaxInvalidPercentageException;
 use App\Domain\Queries\Tax\ListTaxesQuery;
 use Carbon\Carbon;
 use PDO;
@@ -36,6 +37,9 @@ class TaxRepository implements ITaxRepository
         return (int)$this->db->lastInsertId();
     }
 
+    /**
+     * @throws TaxInvalidPercentageException
+     */
     public function show(int $id): ?Tax
     {
         $stmt = $this->db->prepare('SELECT * FROM taxes WHERE id = :id');
@@ -105,5 +109,30 @@ class TaxRepository implements ITaxRepository
         $stmt->execute();
 
         return $stmt->rowCount();
+    }
+
+    public function getTotalTaxByTypes(array $types): array
+    {
+        $whereTypes = implode(', ', $types);
+
+        $stmt = $this->db->query(
+            <<<SQL
+                SELECT
+                    t.name, 
+                    sum(distinct t.percentage) as percentage
+                FROM taxes t
+                JOIN type_taxes tt ON tt.tax_id = t.id
+                WHERE tt.type_id IN ($whereTypes)
+                group by t.name
+            SQL
+        );
+
+        $data = $stmt->fetchAll();
+
+        if (!$data) {
+            return [];
+        }
+
+        return $data;
     }
 }

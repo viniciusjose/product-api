@@ -2,22 +2,31 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\Exception\SaleItem\SaleItemInvalidFieldException;
 use Carbon\Carbon;
 use Decimal\Decimal;
 
 class SaleItem
 {
+    private int $quantity;
+    private Decimal $price;
+
+    /**
+     * @throws SaleItemInvalidFieldException
+     */
     public function __construct(
         private readonly int $saleId,
         private int $productId,
-        private int $quantity,
-        private Decimal $price,
+        int $quantity,
+        Decimal $price,
         private Decimal $taxesAmount,
         private Decimal $amount,
         private readonly ?int $id = null,
         private ?Carbon $createdAt = null,
         private ?Carbon $updatedAt = null,
     ) {
+        $this->setQuantity($quantity);
+        $this->setPrice($price);
     }
 
     public function getSaleId(): int
@@ -41,8 +50,13 @@ class SaleItem
         return $this->quantity;
     }
 
+    /**
+     * @throws SaleItemInvalidFieldException
+     */
     public function setQuantity(int $quantity): SaleItem
     {
+        $this->validateQuantity($quantity);
+
         $this->quantity = $quantity;
         return $this;
     }
@@ -52,8 +66,13 @@ class SaleItem
         return $this->price;
     }
 
+    /**
+     * @throws SaleItemInvalidFieldException
+     */
     public function setPrice(Decimal $price): SaleItem
     {
+        $this->validatePrice($price);
+
         $this->price = $price;
         return $this;
     }
@@ -105,5 +124,25 @@ class SaleItem
     public function getUpdatedAt(): ?Carbon
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @throws SaleItemInvalidFieldException
+     */
+    private function validateQuantity(int $quantity): void
+    {
+        if ($quantity <= 0) {
+            throw new SaleItemInvalidFieldException('Quantity must be greater than 0');
+        }
+    }
+
+    /**
+     * @throws SaleItemInvalidFieldException
+     */
+    private function validatePrice(Decimal $price): void
+    {
+        if ($price->isNegative() || $price->isZero()) {
+            throw new SaleItemInvalidFieldException('Price must be greater than 0');
+        }
     }
 }
