@@ -45,18 +45,23 @@ O ambiente será disponibilizado em http://localhost:8000/api
 docker composer up -d --build
 ```
 
-### 4. Executar as Migrações
+### 4. Instalar Dependências
+```bash
+docker exec -it product-app composer install
+```
+
+### 5. Executar as Migrações
 ```bash
 docker exec -it product-app composer migrate
 ```
 
-### 5. Testes unitários
+### 6. Testes unitários
 Para  executar os testes unitários, execute o comando abaixo:
 ```bash
 docker exec -it product-app composer test
 ```
 
-### 6. Tecnologias Utilizadas
+### 7. Tecnologias Utilizadas
 - [PHP](https://www.php.net/releases/8.3/en.php)
 - [Slim Router](https://www.slimframework.com/docs/v4/objects/routing.html)
 - [Doctrine Migration](https://www.doctrine-project.org/projects/doctrine-migrations/en/3.8/index.html)
@@ -65,7 +70,7 @@ docker exec -it product-app composer test
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Pest](https://pestphp.com/docs)
 
-### 7. Documentação da API
+### 8. Documentação da API
 
 A documentação das rotas está disponível em um arquivo [Insomnia](https://insomnia.rest/) na raiz do projeto.
 
