@@ -26,6 +26,9 @@ cd product-api
 ### 2. Configuração do Ambiente
 Crie um arquivo .env na raiz do projeto e adicione as seguintes variáveis conforme necessário:
 
+```bash
+ cp .env.example .env
+```
 ```dotenv
 DB_NAME=product
 DB_USER=root
