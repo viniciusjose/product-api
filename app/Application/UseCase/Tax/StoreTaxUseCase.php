@@ -28,7 +28,7 @@ readonly class StoreTaxUseCase
 
         $Taxes = new Tax(
             name: $input->name,
-            percentage: $input->percentage
+            percentage: $input->percentage / 100
         );
 
         $this->taxRepository->store($Taxes);

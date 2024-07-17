@@ -26,7 +26,7 @@ describe('StoreTaxUseCase', function () {
 
     it('should be store tax', function () {
         $this->sut->handle(
-            new StoreTaxInputDto(name: 'Any tax nam', percentage: 0.2)
+            new StoreTaxInputDto(name: 'Any tax nam', percentage: 20)
         );
 
         expect(true)->toBeTrue();
@@ -41,7 +41,7 @@ describe('StoreTaxUseCase', function () {
         $sut = new StoreTaxUseCase($repoMock);
 
         $sut->handle(
-            new StoreTaxInputDto(name: 'Any tax nam', percentage: 0.2)
+            new StoreTaxInputDto(name: 'Any tax nam', percentage: 20)
         );
     })->throws(TaxDuplicatedException::class);
 });

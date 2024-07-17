@@ -42,7 +42,7 @@ DB_DRIVER=pdo_pgsql
 Neste processo a imagem será gerada e os containers serão iniciados.<br/>
 O ambiente será disponibilizado em http://localhost:8000/api
 ```bash
-docker composer up -d --build
+docker compose up -d --build
 ```
 
 ### 4. Instalar Dependências
@@ -70,7 +70,10 @@ docker exec -it product-app composer test
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Pest](https://pestphp.com/docs)
 
-### 8. Documentação da API
+### 8. Arquitetura
+- [Clean Architecture](https://fullcycle.com.br/o-que-e-clean-architecture/)
+
+### 9. Documentação da API
 
 A documentação das rotas está disponível em um arquivo [Insomnia](https://insomnia.rest/) na raiz do projeto.
 
@@ -109,11 +112,15 @@ A documentação das rotas está disponível em um arquivo [Insomnia](https://in
 - Cadastro de produtos
 - Cadastro de categorias
 - Cadastro de impostos
+- Testes unitários
+- Migrations
 - API Restful
 
 ## Pontos a serem desenvolvidos
 
 - Autenticação
+- Cadastro de clientes
+- Cesta de compras
 - Testes de integração
 - Testes de aceitação
 - Documentação da API (Swagger)

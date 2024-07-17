@@ -43,7 +43,7 @@ describe('UpdateTaxUseCase', function () {
 
     it('should be update Tax type', function () {
         $dto = $this->sut->handle(
-            new UpdateTaxInputDto(id: 1, name: 'Any tax name', percentage: 0.2)
+            new UpdateTaxInputDto(id: 1, name: 'Any tax name', percentage: 20)
         );
 
         expect($dto)->toBeInstanceOf(UpdateTaxOutputDto::class)

@@ -42,7 +42,7 @@ readonly class UpdateTaxUseCase
         }
 
         $Taxes->setName($input->name);
-        $Taxes->setPercentage($input->percentage);
+        $Taxes->setPercentage($input->percentage / 100);
         $Taxes->setUpdatedAt(Carbon::now());
 
         $updated = $this->taxRepository->update($Taxes);
