@@ -21,8 +21,8 @@ final class Version20240714220938 extends AbstractMigration
     {
         $table = $schema->createTable('sales');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
+        $table->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
         $table->setPrimaryKey(['id']);
     }
 

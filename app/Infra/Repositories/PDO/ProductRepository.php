@@ -23,7 +23,7 @@ class ProductRepository implements IProductRepository
         p.price,
         p.created_at,
         p.updated_at,
-        json_agg(t.*) as types
+        CASE WHEN count(t.*) > 0 THEN json_agg(t.*) END as types
     EOD;
 
     public const string DEFAULT_GROUP_BY = <<<EOD
@@ -46,6 +46,7 @@ class ProductRepository implements IProductRepository
                 FROM products p
                 LEFT JOIN product_types pt ON p.id = pt.product_id
                 LEFT JOIN types t ON pt.type_id = t.id
+                WHERE p.deleted_at IS NULL
                 GROUP BY {$groupBy}
                 ORDER BY p.{$orderBy}
             SQL
@@ -60,7 +61,7 @@ class ProductRepository implements IProductRepository
                 'price'      => $price,
                 'created_at' => Carbon::parse($createdAt),
                 'updated_at' => Carbon::parse($updatedAt),
-                'types'      => json_decode($types, true, 512, JSON_THROW_ON_ERROR)
+                'types'      => $types ? json_decode($types, true, 512, JSON_THROW_ON_ERROR) : []
             ]
         );
 
@@ -95,6 +96,7 @@ class ProductRepository implements IProductRepository
                 LEFT JOIN product_types pt ON p.id = pt.product_id
                 LEFT JOIN types t ON pt.type_id = t.id
                 WHERE p.id = :id
+                AND deleted_at IS NULL
                 GROUP BY {$groupBy}
             SQL
         );
@@ -114,7 +116,7 @@ class ProductRepository implements IProductRepository
             id: $data['id'],
             createdAt: Carbon::parse($data['created_at']),
             updatedAt: Carbon::parse($data['updated_at']),
-            types: json_decode($data['types'], true, 512, JSON_THROW_ON_ERROR)
+            types: $data['types'] ? json_decode($data['types'], true, 512, JSON_THROW_ON_ERROR) : []
         );
     }
 
@@ -123,7 +125,7 @@ class ProductRepository implements IProductRepository
      */
     public function getByName(string $name): ?Product
     {
-        $stmt = $this->db->prepare('SELECT * FROM products WHERE name = ? LIMIT 1');
+        $stmt = $this->db->prepare('SELECT * FROM products WHERE name = ? AND deleted_at IS NULL');
         $stmt->execute([$name]);
 
         $data = $stmt->fetch();
@@ -164,7 +166,7 @@ class ProductRepository implements IProductRepository
 
     public function destroy(int $id): int
     {
-        $stmt = $this->db->prepare('DELETE FROM products WHERE id = :id');
+        $stmt = $this->db->prepare('UPDATE products SET deleted_at = now() WHERE id = :id');
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 

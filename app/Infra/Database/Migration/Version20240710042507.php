@@ -23,7 +23,7 @@ final class Version20240710042507 extends AbstractMigration
 
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
-        $table->addColumn('percentage', 'decimal', ['precision' => 10, 'scale' => 2]);
+        $table->addColumn('percentage', 'decimal', ['precision' => 10, 'scale' => 4]);
         $table->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
         $table->addColumn('updated_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
 

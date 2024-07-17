@@ -7,6 +7,7 @@ use App\Domain\Contract\Repositories\Tax\IGetByNameTax;
 use App\Domain\Contract\Repositories\Tax\IStoreTax;
 use App\Domain\Entities\Tax;
 use App\Domain\Exception\Tax\TaxDuplicatedException;
+use Decimal\Decimal;
 
 readonly class StoreTaxUseCase
 {
@@ -20,17 +21,19 @@ readonly class StoreTaxUseCase
      */
     public function handle(StoreTaxInputDto $input): void
     {
-        $Taxes = $this->taxRepository->getByName($input->name);
+        $taxes = $this->taxRepository->getByName($input->name);
 
-        if ($Taxes) {
+        if ($taxes) {
             throw new TaxDuplicatedException('Tax already exists.');
         }
 
-        $Taxes = new Tax(
+        $percentage = new Decimal((string) $input->percentage);
+
+        $taxes = new Tax(
             name: $input->name,
-            percentage: $input->percentage / 100
+            percentage: (float) $percentage->div(100)->toFixed(4)
         );
 
-        $this->taxRepository->store($Taxes);
+        $this->taxRepository->store($taxes);
     }
 }

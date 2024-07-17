@@ -25,9 +25,10 @@ final class Version20240710042928 extends AbstractMigration
         $table->addColumn('price', 'decimal', ['precision' => 10, 'scale' => 2]);
         $table->addColumn('created_at', 'datetime', ['default' => 'CURRENT_TIMESTAMP']);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('deleted_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['name'], 'products_name_unique');
+        $table->addUniqueIndex(['name', 'deleted_at'], 'products_name_deleted_unique');
     }
 
     public function down(Schema $schema): void

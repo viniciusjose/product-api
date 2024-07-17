@@ -22,7 +22,7 @@ class TypeRepository implements ITypeRepository
         t.description,
         t.created_at,
         t.updated_at,
-        json_agg(tx.*) as taxes
+        CASE WHEN count(tx.*) > 0 THEN json_agg(tx.*) END as taxes
     EOD;
 
     public const string DEFAULT_GROUP_BY = <<<EOD
@@ -58,7 +58,7 @@ class TypeRepository implements ITypeRepository
                 'description' => $description,
                 'created_at'  => Carbon::parse($createdAt),
                 'updated_at'  => Carbon::parse($updatedAt),
-                'taxes'       => json_decode($taxes, true, 512, JSON_THROW_ON_ERROR)
+                'taxes'       => $taxes ? json_decode($taxes, true, 512, JSON_THROW_ON_ERROR) : []
             ]
         );
 
@@ -111,7 +111,7 @@ class TypeRepository implements ITypeRepository
             description: $data['description'],
             createdAt: Carbon::parse($data['created_at']),
             updatedAt: Carbon::parse($data['updated_at']),
-            taxes: json_decode($data['taxes'], true, 512, JSON_THROW_ON_ERROR)
+            taxes: $data['taxes'] ? json_decode($data['taxes'], true, 512, JSON_THROW_ON_ERROR) : []
         );
     }
 

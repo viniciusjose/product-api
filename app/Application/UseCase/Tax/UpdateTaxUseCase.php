@@ -11,9 +11,11 @@ use App\Domain\Contract\Repositories\Tax\IStoreTax;
 use App\Domain\Contract\Repositories\Tax\IUpdateTax;
 use App\Domain\Entities\Tax;
 use App\Domain\Exception\Tax\TaxDuplicatedException;
+use App\Domain\Exception\Tax\TaxInvalidPercentageException;
 use App\Domain\Exception\Tax\TaxNotFoundException;
 use App\Domain\Exception\Tax\TaxUpdateException;
 use Carbon\Carbon;
+use Cassandra\Decimal;
 
 readonly class UpdateTaxUseCase
 {
@@ -26,37 +28,40 @@ readonly class UpdateTaxUseCase
      * @throws TaxDuplicatedException
      * @throws TaxNotFoundException
      * @throws TaxUpdateException
+     * @throws TaxInvalidPercentageException
      */
     public function handle(UpdateTaxInputDto $input): UpdateTaxOutputDto
     {
-        $Taxes = $this->taxRepository->show($input->id);
+        $tax = $this->taxRepository->show($input->id);
 
-        if ($Taxes === null) {
+        if ($tax === null) {
             throw new TaxNotFoundException('Tax not found.');
         }
 
         $duplicated = $this->taxRepository->getByName($input->name);
 
-        if ($duplicated && $Taxes->getName() !== $duplicated?->getName()) {
+        if ($duplicated && $tax->getName() !== $duplicated?->getName()) {
             throw new TaxDuplicatedException('Tax name already exists.');
         }
 
-        $Taxes->setName($input->name);
-        $Taxes->setPercentage($input->percentage / 100);
-        $Taxes->setUpdatedAt(Carbon::now());
+        $tax->setName($input->name);
+        $percentage = new \Decimal\Decimal((string) $input->percentage);
 
-        $updated = $this->taxRepository->update($Taxes);
+        $tax->setPercentage((float) $percentage->div(100)->toFixed(4));
+        $tax->setUpdatedAt(Carbon::now());
+
+        $updated = $this->taxRepository->update($tax);
 
         if (!$updated) {
             throw new TaxUpdateException('Tax could not be updated.');
         }
 
         return new UpdateTaxOutputDto(
-            id: $Taxes->getId(),
-            name: $Taxes->getName(),
-            percentage: $Taxes->getPercentage(),
-            createdAt: $Taxes->getCreatedAt(),
-            updatedAt: $Taxes->getUpdatedAt()
+            id: $tax->getId(),
+            name: $tax->getName(),
+            percentage: $tax->getPercentage(),
+            createdAt: $tax->getCreatedAt(),
+            updatedAt: $tax->getUpdatedAt()
         );
     }
 }
