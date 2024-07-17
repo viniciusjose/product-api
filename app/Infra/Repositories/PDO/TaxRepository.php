@@ -114,7 +114,7 @@ class TaxRepository implements ITaxRepository
     public function getTotalTaxByTypes(array $types): array
     {
         $whereTypes = implode(', ', $types);
-
+        var_dump($whereTypes);
         $stmt = $this->db->query(
             <<<SQL
                 SELECT

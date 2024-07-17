@@ -65,7 +65,6 @@ readonly class SaleStoreProductUseCase
         );
 
         $taxesPercentage = new Decimal((string)array_sum($taxes));
-
         $price = $product->getPrice()->mul($input->quantity);
         $productTaxAmount = $price->mul($taxesPercentage);
 
